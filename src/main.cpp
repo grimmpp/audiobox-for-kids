@@ -12,8 +12,11 @@
 #include <SPI.h>
 #include <SoftwareSerial.h>
 
-#include "NfcHelper.h"
+// local references
+#include "NfcData.h"
 #include "Mp3CommandMap.h"
+#include "RfidReader.h"
+#include "Mp3Player.h"
 
 // DFPlayer Mini
 SoftwareSerial mySoftwareSerial(2, 3); // RX, TX
@@ -30,10 +33,10 @@ static void nextTrack(uint16_t track);
 int voiceMenu(int numberOfOptions, int startMessage, int messageOffset,
               bool preview = false, int previewFromFolder = 0);
 void resetCard(void);
-bool readCard(NfcTag *nfcTag);
+// bool readCard(NfcTag *nfcTag);
 void setupCard(void);
-void writeCard(NfcTag nfcTag);
-void dump_byte_array(byte *buffer, byte bufferSize);
+// void writeCard(NfcTag nfcTag);
+// void dump_byte_array(byte *buffer, byte bufferSize);
 
 class Mp3Notify {
 public:
@@ -161,24 +164,22 @@ static void previousTrack() {
   }
 }
 
-// MFRC522
+// RFID Reader
 #define RST_PIN 9                 // Configurable, see typical pin layout above
 #define SS_PIN 10                 // Configurable, see typical pin layout above
-MFRC522 mfrc522(SS_PIN, RST_PIN); // Create MFRC522
-MFRC522::MIFARE_Key key;
-bool successRead;
-byte sector = 1;
-byte blockAddr = 4;
-byte trailerBlock = 7;
-MFRC522::StatusCode status;
+RfidReader rfidReader = RfidReader(SS_PIN, RST_PIN);
 
+// Button Pins
 #define buttonPause A0
 #define buttonUp A1
 #define buttonDown A2
+
+// Busy Pin
 #define busyPin 4
 
 #define LONG_PRESS 1000
 
+// Buttonss
 Button pauseButton(buttonPause);
 Button upButton(buttonUp);
 Button downButton(buttonDown);
@@ -225,12 +226,13 @@ void setup() {
 
   // NFC Reader
   // Log.trace("Init NFC reader: ");
-  SPI.begin();        // Init SPI bus
-  mfrc522.PCD_Init(); // Init MFRC522
-  mfrc522.PCD_DumpVersionToSerial(); // Show details of PCD - MFRC522 Card Reader
-  for (byte i = 0; i < 6; i++) {
-    key.keyByte[i] = 0xFF;
-  }
+  // SPI.begin();        // Init SPI bus
+  // mfrc522.PCD_Init(); // Init MFRC522
+  // mfrc522.PCD_DumpVersionToSerial(); // Show details of PCD - MFRC522 Card Reader
+  // for (byte i = 0; i < 6; i++) {
+  //   key.keyByte[i] = 0xFF;
+  // }
+  rfidReader.init();
 
   // RESET --- ALLE DREI KNÖPFE BEIM STARTEN GEDRÜCKT HALTEN -> alle bekannten
   // Karten werden gelöscht
@@ -282,8 +284,7 @@ void loop() {
         mp3Player.playMp3FolderTrack(Mp3CommandMap::COMMAND_ID_RESET_TAG);
         Log.notice("Reset Nfc Card: "CR);
         resetCard();
-        mfrc522.PICC_HaltA();
-        mfrc522.PCD_StopCrypto1();
+        rfidReader.halt();
       }
       ignorePauseButton = true;
     }
@@ -309,17 +310,16 @@ void loop() {
       else
         ignoreDownButton = false;
     }
-
-  } while (!mfrc522.PICC_IsNewCardPresent());
+  } while (!rfidReader.isNewCardPresent());
 
   // RFID card was placed
   // Log.notice("New card was detected. " CR);
 
-  if (!mfrc522.PICC_ReadCardSerial()) {
+  if (!rfidReader.readCardSerial()) {
     return;
   }
 
-  if (readCard(&myCard) == true) {
+  if (rfidReader.readCard(&myCard)) {
 
     uint16_t numTracksInFolder = mp3Player.getFolderTrackCount(myCard.folder);
       
@@ -392,8 +392,7 @@ void loop() {
         setupCard();
       }
 
-    mfrc522.PICC_HaltA();
-    mfrc522.PCD_StopCrypto1();
+    rfidReader.halt();
   }
 }
 
@@ -469,10 +468,9 @@ void resetCard() {
       mp3Player.playMp3FolderTrack(Mp3CommandMap::COMMAND_ID_RESET_ABORTED);
       return;
     }
-  } while (!mfrc522.PICC_IsNewCardPresent());
+  } while (!rfidReader.isNewCardPresent());
 
-  if (!mfrc522.PICC_ReadCardSerial())
-    return;
+  if (!rfidReader.readCardSerial()) return;
 
   Log.notice("NFC Card is configured successfully!" CR);
   setupCard();
@@ -505,118 +503,5 @@ void setupCard() {
 
   // Configuration completed
   mp3Player.pause();
-  writeCard(myCard);
-}
-
-bool readCard(NfcTag *nfcTag) {
-  bool returnValue = true;
-  // Show some details of the PICC (that is: the tag/card)
-  Log.notice("Read NFC Card:" CR);
-  Log.notice("Card UID: %b" CR, mfrc522.uid.uidByte);
-   dump_byte_array(mfrc522.uid.uidByte, mfrc522.uid.size);
-
-  Log.notice(CR "PICC type: %s" CR, mfrc522.PICC_GetTypeName(mfrc522.PICC_GetType(mfrc522.uid.sak)));
-  // MFRC522::PICC_Type piccType = ;
-
-  byte buffer[18];
-  byte size = sizeof(buffer);
-
-  // Authenticate using key A
-  Serial.println(F("Authenticating using key A..."));
-  status = (MFRC522::StatusCode)mfrc522.PCD_Authenticate(
-      MFRC522::PICC_CMD_MF_AUTH_KEY_A, trailerBlock, &key, &(mfrc522.uid));
-  if (status != MFRC522::STATUS_OK) {
-    returnValue = false;
-    Serial.print(F("PCD_Authenticate() failed: "));
-    Serial.println(mfrc522.GetStatusCodeName(status));
-    return;
-  }
-
-  // Show the whole sector as it currently is
-  Serial.println(F("Current data in sector:"));
-  mfrc522.PICC_DumpMifareClassicSectorToSerial(&(mfrc522.uid), &key, sector);
-  Serial.println();
-
-  // Read data from the block
-  Serial.print(F("Reading data from block "));
-  Serial.print(blockAddr);
-  Serial.println(F(" ..."));
-  status = (MFRC522::StatusCode)mfrc522.MIFARE_Read(blockAddr, buffer, &size);
-  if (status != MFRC522::STATUS_OK) {
-    returnValue = false;
-    Serial.print(F("MIFARE_Read() failed: "));
-    Serial.println(mfrc522.GetStatusCodeName(status));
-  }
-  Serial.print(F("Data in block "));
-  Serial.print(blockAddr);
-  Serial.println(F(":"));
-  dump_byte_array(buffer, 16);
-  Serial.println();
-  Serial.println();
-
-  uint32_t tempCookie;
-  tempCookie = (uint32_t)buffer[0] << 24;
-  tempCookie += (uint32_t)buffer[1] << 16;
-  tempCookie += (uint32_t)buffer[2] << 8;
-  tempCookie += (uint32_t)buffer[3];
-
-  nfcTag->cookie = tempCookie;
-  nfcTag->version = buffer[4];
-  nfcTag->folder = buffer[5];
-  nfcTag->mode = buffer[6];
-  nfcTag->special = buffer[7];
-
-  return returnValue;
-}
-
-void writeCard(NfcTag nfcTag) {
-  MFRC522::PICC_Type mifareType;
-  byte buffer[16] = {0x13, 0x37, 0xb3, 0x47, // 0x1337 0xb347 magic cookie to
-                                             // identify our nfc tags
-                     0x01,                   // version 1
-                     nfcTag.folder,          // the folder picked by the user
-                     nfcTag.mode,            // the playback mode picked by the user
-                     nfcTag.special,         // track or function for admin cards
-                     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
-
-  byte size = sizeof(buffer);
-
-  mifareType = mfrc522.PICC_GetType(mfrc522.uid.sak);
-
-  // Authenticate using key B
-  // Log.notice("Authenticating again using key B..." CR);
-  status = (MFRC522::StatusCode)mfrc522.PCD_Authenticate(
-      MFRC522::PICC_CMD_MF_AUTH_KEY_B, trailerBlock, &key, &(mfrc522.uid));
-  if (status != MFRC522::STATUS_OK) {
-    Log.error("NFC Card PCD_Authenticate() failed: %s" CR, mfrc522.GetStatusCodeName(status));
-    mp3Player.playMp3FolderTrack(Mp3CommandMap::COMMAND_ID_ERROR);
-    return;
-  }
-
-  // Write data to the block
-  Log.notice("Writing data into block: %d " CR, blockAddr);
-  Log.notice(" ..." CR);
-  dump_byte_array(buffer, 16); 
-  Log.notice("" CR);
-
-  status = (MFRC522::StatusCode)mfrc522.MIFARE_Write(blockAddr, buffer, 16);
-  if (status != MFRC522::STATUS_OK) {
-    Log.notice("MIFARE_Write() failed: %s" CR, mfrc522.GetStatusCodeName(status));
-    mp3Player.playMp3FolderTrack(Mp3CommandMap::COMMAND_ID_ERROR);
-  }
-  else {
-    mp3Player.playMp3FolderTrack(Mp3CommandMap::COMMAND_ID_TAG_OK);
-  }
-  Serial.println();
-  delay(100);
-}
-
-/**
- * Helper routine to dump a byte array as hex values to Serial.
- */
-void dump_byte_array(byte *buffer, byte bufferSize) {
-  for (byte i = 0; i < bufferSize; i++) {
-    Serial.print(buffer[i] < 0x10 ? " 0" : " ");
-    Serial.print(buffer[i], HEX);
-  }
+  rfidReader.writeCard(myCard);
 }
