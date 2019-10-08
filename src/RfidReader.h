@@ -1,5 +1,5 @@
-#ifndef RfidReader_H
-#define RfidReader_H
+#ifndef Rfid_Reader_H
+#define Rfid_Reader_H
 
 #include <Arduino.h>
 #include <SPI.h>
@@ -19,12 +19,14 @@ class RfidReader {
       mfrc522 = MFRC522(chipSelectPin, resetPowerDownPin);
     }
 
-    void init() {
+    void init(bool dumpVersion = false) {
       SPI.begin();
       mfrc522.PCD_Init();
-      mfrc522.PCD_DumpVersionToSerial();
-      for (byte i = 0; i < 6; i++) {
-        key.keyByte[i] = 0xFF;
+      if (dumpVersion) {
+        mfrc522.PCD_DumpVersionToSerial();
+        for (byte i = 0; i < 6; i++) {
+          key.keyByte[i] = 0xFF;
+        }
       }
     }
 
@@ -49,10 +51,10 @@ class RfidReader {
       MFRC522::StatusCode status = (MFRC522::StatusCode)mfrc522.PCD_Authenticate(
           MFRC522::PICC_CMD_MF_AUTH_KEY_A, trailerBlock, &key, &(mfrc522.uid));
       if (status != MFRC522::STATUS_OK) {
-        returnValue = false;
         Serial.print(F("PCD_Authenticate() failed: "));
         Serial.println(mfrc522.GetStatusCodeName(status));
-        return;
+        returnValue = false;
+        return returnValue;
       }
 
       // Show the whole sector as it currently is
@@ -66,9 +68,9 @@ class RfidReader {
       Serial.println(F(" ..."));
       status = (MFRC522::StatusCode)mfrc522.MIFARE_Read(blockAddr, buffer, &size);
       if (status != MFRC522::STATUS_OK) {
-        returnValue = false;
         Serial.print(F("MIFARE_Read() failed: "));
         Serial.println(mfrc522.GetStatusCodeName(status));
+        returnValue = false;
       }
       Serial.print(F("Data in block "));
       Serial.print(blockAddr);
@@ -93,7 +95,6 @@ class RfidReader {
     }
 
     bool writeCard(NfcTag nfcTag) {
-      MFRC522::PICC_Type mifareType;
       byte buffer[16] = {0x13, 0x37, 0xb3, 0x47, // 0x1337 0xb347 magic cookie to
                                                 // identify our nfc tags
                         0x01,                   // version 1
@@ -102,9 +103,8 @@ class RfidReader {
                         nfcTag.special,         // track or function for admin cards
                         0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
 
-      byte size = sizeof(buffer);
-
-      mifareType = mfrc522.PICC_GetType(mfrc522.uid.sak);
+      //TODO: Needed?
+      // MFRC522::PICC_Type mifareType = mfrc522.PICC_GetType(mfrc522.uid.sak);
 
       // Authenticate using key B
       // Log.notice("Authenticating again using key B..." CR);
@@ -119,6 +119,7 @@ class RfidReader {
       // Write data to the block
       Log.notice("Writing data into block: %d " CR, blockAddr);
       Log.notice(" ..." CR);
+      // byte size = sizeof(buffer);
       dump_byte_array(buffer, 16); 
       Log.notice("" CR);
 

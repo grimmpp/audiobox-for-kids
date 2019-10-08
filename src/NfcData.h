@@ -12,7 +12,7 @@ struct NfcTag {
   uint8_t special;
 };
 
-enum NFC_CARD_MODE {
+enum NFC_CARD_MODE : uint8_t {
   AUDIO_BOOK = 1,
   ALBUM = 2,
   PARTY = 3,

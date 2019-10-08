@@ -14,12 +14,12 @@
 
 // local references
 #include "NfcData.h"
-#include "Mp3CommandMap.h"
+#include "SystemSound.h"
 #include "RfidReader.h"
 #include "Mp3Player.h"
 
 // DFPlayer Mini
-SoftwareSerial mySoftwareSerial(2, 3); // RX, TX
+// SoftwareSerial mySoftwareSerial(2, 3); // RX, TX
 uint16_t numTracksInFolder = 0;
 uint16_t currentTrack = 0;
 uint16_t currentMp3PlayerTrack = 0;
@@ -29,42 +29,32 @@ NfcTag myCard;
 
 bool knownCard = false;
 
-static void nextTrack(uint16_t track);
 int voiceMenu(int numberOfOptions, int startMessage, int messageOffset,
               bool preview = false, int previewFromFolder = 0);
 void resetCard(void);
-// bool readCard(NfcTag *nfcTag);
 void setupCard(void);
-// void writeCard(NfcTag nfcTag);
-// void dump_byte_array(byte *buffer, byte bufferSize);
+void nextTrack(uint16_t);
 
-class Mp3Notify {
+class Callback : public ICallback {
 public:
-  static void OnError(uint16_t errorCode) {
-    // see DfMp3_Error for code meaning
-    Log.notice(CR "Com Error %d" CR, errorCode);
-  }
-  static void OnPlayFinished(uint16_t track) {
-    Log.notice("Finished Track: %d" CR, track);
-    //Log.notice("Finished Track: S% " CR, Mp3CommandMap::getCommandByID(track));
-    delay(100);
+  void notify(uint8_t track) {
     nextTrack(track);
   }
-
-  static void OnCardOnline(uint16_t code) { Log.notice("SD Card is online."); }
-  static void OnCardInserted(uint16_t code) { Log.notice("SD card has been inserted."); }
-  static void OnCardRemoved(uint16_t code) { Log.notice("SD card has been removed."); }
-  static void OnUsbOnline(uint16_t code) { Log.notice("USB is online."); }
-  static void OnUsbInserted(uint16_t code) { Log.notice("USB is ready."); }
-  static void OnUsbRemoved(uint16_t code) { Log.notice("USB has been removed."); }
 };
+ICallback *callbackObj = new Callback();
 
-static DFMiniMp3<SoftwareSerial, Mp3Notify> mp3Player(mySoftwareSerial);
+// Busy Pin
+#define BUSY_PIN 4
+// Software serial
+#define MP3_PLAYER_RX_PIN 2
+#define MP3_PLAYER_TX_PIN 3
+
+Mp3Player * mp3Player;
 
 // Leider kann das Modul keine Queue abspielen.
 static uint16_t _lastTrackFinished;
 
-static void nextTrack(uint16_t track) {
+void nextTrack(uint16_t track) {
   if (track == _lastTrackFinished) {
     return;
    }
@@ -79,17 +69,17 @@ static void nextTrack(uint16_t track) {
 
     case NFC_CARD_MODE::AUDIO_BOOK:
       Serial.println(F("Hörspielmodus ist aktiv -> keinen neuen Track spielen"));
-      mp3Player.sleep(); // Je nach Modul kommt es nicht mehr zurück aus dem Sleep!
+      mp3Player->sleep(); // Je nach Modul kommt es nicht mehr zurück aus dem Sleep!
       break;
   
     case NFC_CARD_MODE::ALBUM:
       if (currentTrack != numTracksInFolder) {
         currentTrack = currentTrack + 1;
-        mp3Player.playFolderTrack(myCard.folder, currentTrack);
+        mp3Player->playFolderTrack(myCard.folder, currentTrack);
         Serial.print(F("Albummodus ist aktiv -> nächster Track: "));
         Serial.print(currentTrack);
       } else {
-        mp3Player.sleep();   // Je nach Modul kommt es nicht mehr zurück aus dem Sleep!
+        mp3Player->sleep();   // Je nach Modul kommt es nicht mehr zurück aus dem Sleep!
       }
       break;
 
@@ -100,12 +90,12 @@ static void nextTrack(uint16_t track) {
         currentTrack = currentTrack == numTracksInFolder ? 1 : currentTrack+1;
       Serial.print(F("Party Modus ist aktiv -> zufälligen Track spielen: "));
       Serial.println(currentTrack);
-      mp3Player.playFolderTrack(myCard.folder, currentTrack);
+      mp3Player->playFolderTrack(myCard.folder, currentTrack);
       break;
 
-    case NFC_CARD_MODE::SINGLE_TRACK:
+    case NFC_CARD_MODE::SINGLE_TRACK: 
       Serial.println(F("Einzel Modus aktiv -> Strom sparen"));
-      mp3Player.sleep();      // Je nach Modul kommt es nicht mehr zurück aus dem Sleep!
+      mp3Player->sleep();      // Je nach Modul kommt es nicht mehr zurück aus dem Sleep!
       break;
   
     case NFC_CARD_MODE::AUDIO_BOOK_WITH_BOOKMARK:
@@ -114,11 +104,11 @@ static void nextTrack(uint16_t track) {
         Serial.print(F("Hörbuch Modus ist aktiv -> nächster Track und "
                       "Fortschritt speichern"));
         Serial.println(currentTrack);
-        mp3Player.playFolderTrack(myCard.folder, currentTrack);
+        mp3Player->playFolderTrack(myCard.folder, currentTrack);
         // Fortschritt im EEPROM abspeichern
         EEPROM.write(myCard.folder, currentTrack);
       } else {
-        mp3Player.sleep();  // Je nach Modul kommt es nicht mehr zurück aus dem Sleep!
+        mp3Player->sleep();  // Je nach Modul kommt es nicht mehr zurück aus dem Sleep!
         // Fortschritt zurück setzen
         EEPROM.write(myCard.folder, 1);
       }
@@ -131,7 +121,7 @@ static void previousTrack() {
   switch(myCard.mode) {
     case NFC_CARD_MODE::AUDIO_BOOK:
       Serial.println(F("Hörspielmodus ist aktiv -> Track von vorne spielen"));
-      mp3Player.playFolderTrack(myCard.folder, currentTrack);
+      mp3Player->playFolderTrack(myCard.folder, currentTrack);
       break;
   
     case NFC_CARD_MODE::ALBUM:
@@ -139,17 +129,17 @@ static void previousTrack() {
       if (currentTrack != 1) {
         currentTrack = currentTrack - 1;
       }
-      mp3Player.playFolderTrack(myCard.folder, currentTrack);
+      mp3Player->playFolderTrack(myCard.folder, currentTrack);
       break;
   
     case NFC_CARD_MODE::PARTY:
       Serial.println(F("Party Modus ist aktiv -> Track von vorne spielen"));
-      mp3Player.playFolderTrack(myCard.folder, currentTrack);
+      mp3Player->playFolderTrack(myCard.folder, currentTrack);
       break;
   
     case NFC_CARD_MODE::SINGLE_TRACK:
       Serial.println(F("Einzel Modus aktiv -> Track von vorne spielen"));
-      mp3Player.playFolderTrack(myCard.folder, currentTrack);
+      mp3Player->playFolderTrack(myCard.folder, currentTrack);
       break;
 
     case NFC_CARD_MODE::AUDIO_BOOK_WITH_BOOKMARK:
@@ -157,7 +147,7 @@ static void previousTrack() {
       if (currentTrack != 1) {
         currentTrack = currentTrack - 1;
       }
-      mp3Player.playFolderTrack(myCard.folder, currentTrack);
+      mp3Player->playFolderTrack(myCard.folder, currentTrack);
       // Fortschritt im EEPROM abspeichern
       EEPROM.write(myCard.folder, currentTrack);
       break;
@@ -167,15 +157,12 @@ static void previousTrack() {
 // RFID Reader
 #define RST_PIN 9                 // Configurable, see typical pin layout above
 #define SS_PIN 10                 // Configurable, see typical pin layout above
-RfidReader rfidReader = RfidReader(SS_PIN, RST_PIN);
+RfidReader *rfidReader; // = RfidReader(SS_PIN, RST_PIN);
 
 // Button Pins
 #define buttonPause A0
 #define buttonUp A1
 #define buttonDown A2
-
-// Busy Pin
-#define busyPin 4
 
 #define LONG_PRESS 1000
 
@@ -189,7 +176,7 @@ bool ignoreDownButton = false;
 
 uint8_t numberOfCards = 0;
 
-bool isPlaying() { return !digitalRead(busyPin); }
+// bool isPlaying() { return !digitalRead(BUSY_PIN); }
 
 void restartOption() {
   if (upButton.pressedFor(LONG_PRESS) && downButton.pressedFor(LONG_PRESS)) {
@@ -220,36 +207,26 @@ void setup() {
   pinMode(buttonUp, INPUT_PULLUP);
   pinMode(buttonDown, INPUT_PULLUP);
 
-  // Busy Pin
-  // Log.trace("Init busy pin from mp3 module." CR);
-  pinMode(busyPin, INPUT);
-
   // NFC Reader
   // Log.trace("Init NFC reader: ");
-  // SPI.begin();        // Init SPI bus
-  // mfrc522.PCD_Init(); // Init MFRC522
-  // mfrc522.PCD_DumpVersionToSerial(); // Show details of PCD - MFRC522 Card Reader
-  // for (byte i = 0; i < 6; i++) {
-  //   key.keyByte[i] = 0xFF;
-  // }
-  rfidReader.init();
+  rfidReader = new RfidReader(SS_PIN, RST_PIN);
+  rfidReader->init(true);
 
   // RESET --- ALLE DREI KNÖPFE BEIM STARTEN GEDRÜCKT HALTEN -> alle bekannten
   // Karten werden gelöscht
   if (digitalRead(buttonPause) == LOW && digitalRead(buttonUp) == LOW && digitalRead(buttonDown) == LOW) {
     Serial.println(F("Reset -> EEPROM wird gelöscht"));
-    for (int i = 0; i < EEPROM.length(); i++) {
+    for (uint16_t i = 0; i < EEPROM.length(); i++) {
       EEPROM.write(i, 0);
     }
   }
 
   // DFPlayer Mini initialisieren
   // Log.trace("Init mp3 player." CR);
-  mp3Player.begin();
-  // Log.notice("Set volume to %d" CR, INIT_VOL);
-  mp3Player.setVolume(INIT_VOL);
-  // Log.notice("Play start sound: %s " CR, Mp3CommandMap::getCommandByID(Mp3CommandMap::COMMAND_ID_START_SOUND));
-  mp3Player.playMp3FolderTrack(Mp3CommandMap::COMMAND_ID_START_SOUND);
+  mp3Player = new Mp3Player(MP3_PLAYER_RX_PIN, MP3_PLAYER_TX_PIN, BUSY_PIN, callbackObj);
+  mp3Player->setVolume(INIT_VOL);
+  // Log.notice("Play start sound: %s " CR, SystemSound::GetSystemSoundById(SystemSound::START_SOUND));
+  mp3Player->playSystemSounds(SystemSound::START_SOUND);
   
   Log.trace("Initialization completed." CR CR);
 }
@@ -258,7 +235,7 @@ void loop() {
   // Log.notice("loop start" CR);
 
   do {
-    mp3Player.loop();
+    mp3Player->loop();
     // Buttons werden nun über JS_Button gehandelt, dadurch kann jede Taste
     // doppelt belegt werden
     pauseButton.read();
@@ -269,29 +246,29 @@ void loop() {
 
     if (pauseButton.wasReleased()) {
       if (ignorePauseButton == false) {
-        if (isPlaying())
-          mp3Player.pause();
+        if (mp3Player->isPlaying())
+          mp3Player->pause();
         else
-          mp3Player.start();
+          mp3Player->start();
       }
       ignorePauseButton = false;
     } 
     else if (pauseButton.pressedFor(LONG_PRESS) && ignorePauseButton == false) {
-      if (isPlaying()) {
-        mp3Player.playAdvertisement(currentTrack);
+      if (mp3Player->isPlaying()) {
+        mp3Player->playAdvertisement(currentTrack);
       } else {
         knownCard = false;
-        mp3Player.playMp3FolderTrack(Mp3CommandMap::COMMAND_ID_RESET_TAG);
-        Log.notice("Reset Nfc Card: "CR);
+        mp3Player->playSystemSounds(SystemSound::RESET_TAG);
+        Log.notice("Reset Nfc Card: " CR);
         resetCard();
-        rfidReader.halt();
+        rfidReader->halt();
       }
       ignorePauseButton = true;
     }
 
     if (upButton.pressedFor(LONG_PRESS)) {
       Serial.println(F("Volume Up"));
-      mp3Player.increaseVolume();
+      mp3Player->increaseVolume();
       ignoreUpButton = true;
     } else if (upButton.wasReleased()) {
       if (!ignoreUpButton)
@@ -302,7 +279,7 @@ void loop() {
 
     if (downButton.pressedFor(LONG_PRESS)) {
       Serial.println(F("Volume Down"));
-      mp3Player.decreaseVolume();
+      mp3Player->decreaseVolume();
       ignoreDownButton = true;
     } else if (downButton.wasReleased()) {
       if (!ignoreDownButton)
@@ -310,18 +287,18 @@ void loop() {
       else
         ignoreDownButton = false;
     }
-  } while (!rfidReader.isNewCardPresent());
+  } while (!rfidReader->isNewCardPresent());
 
   // RFID card was placed
   // Log.notice("New card was detected. " CR);
 
-  if (!rfidReader.readCardSerial()) {
+  if (!rfidReader->readCardSerial()) {
     return;
   }
 
-  if (rfidReader.readCard(&myCard)) {
+  if (rfidReader->readCard(&myCard)) {
 
-    uint16_t numTracksInFolder = mp3Player.getFolderTrackCount(myCard.folder);
+    uint16_t numTracksInFolder = mp3Player->getFolderTrackCount(myCard.folder);
       
       if (myCard.cookie == 322417479 && myCard.folder != 0 && myCard.mode != 0) {
 
@@ -330,9 +307,9 @@ void loop() {
 
         } else {
 
-        // Log.notice("Mp3 player playing %T and current track number is %d" CR, isPlaying(), mp3Player.getCurrentTrack());
+        // Log.notice("Mp3 player playing %T and current track number is %d" CR, isPlaying(), mp3Player->getCurrentTrack());
 
-        // if (!isPlaying() || currentMp3PlayerTrack != mp3Player.getCurrentTrack()) {
+        // if (!isPlaying() || currentMp3PlayerTrack != mp3Player->getCurrentTrack()) {
           
           knownCard = true;
           _lastTrackFinished = 0;
@@ -371,11 +348,11 @@ void loop() {
           }
 
           // Play track
-          mp3Player.playFolderTrack(myCard.folder, currentTrack);
+          mp3Player->playFolderTrack(myCard.folder, currentTrack);
 
           delay(250);
 
-          currentMp3PlayerTrack = mp3Player.getCurrentTrack();
+          currentMp3PlayerTrack = mp3Player->getCurrentTrack();
 
           Log.notice("Track %d in folder %d (Mp3 Play number %d) is playing." CR, 
             currentTrack, myCard.folder, currentMp3PlayerTrack);
@@ -392,21 +369,21 @@ void loop() {
         setupCard();
       }
 
-    rfidReader.halt();
+    rfidReader->halt();
   }
 }
 
 void playPreview(int messageOffset, bool preview, int previewFromFolder, int returnValue){
-  mp3Player.playMp3FolderTrack(messageOffset + returnValue);
+  mp3Player->playSystemSounds(messageOffset + returnValue);
   delay(1000);
   if (preview) {
     do {
       delay(10);
-    } while (isPlaying());
+    } while (mp3Player->isPlaying());
     if (previewFromFolder == 0)
-      mp3Player.playFolderTrack(returnValue, 1);
+      mp3Player->playFolderTrack(returnValue, 1);
     else
-      mp3Player.playFolderTrack(previewFromFolder, returnValue);
+      mp3Player->playFolderTrack(previewFromFolder, returnValue);
   }
 }
 
@@ -414,13 +391,15 @@ void playPreview(int messageOffset, bool preview, int previewFromFolder, int ret
 int voiceMenu(int numberOfOptions, int startMessage, int messageOffset,
               bool preview = false, int previewFromFolder = 0) {
   int returnValue = 0;
-  if (startMessage != 0) mp3Player.playMp3FolderTrack(startMessage);
+  if (startMessage != 0) {
+    mp3Player->playSystemSounds(startMessage);
+  }
 
   do {
     pauseButton.read();
     upButton.read();
     downButton.read();
-    mp3Player.loop();
+    mp3Player->loop();
 
     restartOption();
 
@@ -465,43 +444,43 @@ void resetCard() {
 
     if (upButton.wasReleased() || downButton.wasReleased()) {
       Log.notice("Reset Card was cancelled.");
-      mp3Player.playMp3FolderTrack(Mp3CommandMap::COMMAND_ID_RESET_ABORTED);
+      mp3Player->playSystemSounds(SystemSound::RESET_ABORTED);
       return;
     }
-  } while (!rfidReader.isNewCardPresent());
+  } while (!rfidReader->isNewCardPresent());
 
-  if (!rfidReader.readCardSerial()) return;
+  if (!rfidReader->readCardSerial()) return;
 
   Log.notice("NFC Card is configured successfully!" CR);
   setupCard();
 }
 
 void setupCard() {
-  mp3Player.pause();
+  mp3Player->pause();
   Log.notice("Configure new card:" CR);
 
   // Ask for mapping folder
-  myCard.folder = voiceMenu(99, Mp3CommandMap::COMMAND_ID_NEW_TAG, 0, true);
+  myCard.folder = voiceMenu(99, SystemSound::NEW_TAG, 0, true);
 
   // Ask for play mode
-  myCard.mode = voiceMenu(6, Mp3CommandMap::COMMAND_ID_TAG_LINKED, Mp3CommandMap::COMMAND_ID_TAG_LINKED);
+  myCard.mode = voiceMenu(6, SystemSound::TAG_LINKED, SystemSound::TAG_LINKED);
 
   // Create bookmark 
   EEPROM.write(myCard.folder,1);
 
   // Ask for single track in case of single track mode
   if (myCard.mode == NFC_CARD_MODE::SINGLE_TRACK) {
-    myCard.special = voiceMenu(mp3Player.getFolderTrackCount(myCard.folder), 
-                                Mp3CommandMap::COMMAND_ID_SELECT_FILE, 0,
+    myCard.special = voiceMenu(mp3Player->getFolderTrackCount(myCard.folder), 
+                                SystemSound::SELECT_FILE, 0,
                                 true, myCard.folder);
   }
 
   // Admin Mode
   if (myCard.mode == NFC_CARD_MODE::ADMIN) {
-    myCard.special = voiceMenu(3, Mp3CommandMap::COMMAND_ID_SELECT_FILE, Mp3CommandMap::COMMAND_ID_SELECT_FILE);
+    myCard.special = voiceMenu(3, SystemSound::SELECT_FILE, SystemSound::SELECT_FILE);
   }
 
   // Configuration completed
-  mp3Player.pause();
-  rfidReader.writeCard(myCard);
+  mp3Player->pause();
+  rfidReader->writeCard(myCard);
 }
