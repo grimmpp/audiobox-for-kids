@@ -4,13 +4,7 @@
 #include <ArduinoLog.h>
 // https://github.com/thijse/Arduino-Log/blob/master/examples/Log/Log.ino
 
-#include <DFMiniMp3.h>
-// https://github.com/Makuna/DFMiniMp3/blob/master/src/DFMiniMp3.h
-
 #include <JC_Button.h>
-#include <MFRC522.h>
-#include <SPI.h>
-#include <SoftwareSerial.h>
 
 // local references
 #include "NfcData.h"
@@ -19,11 +13,11 @@
 #include "Mp3Player.h"
 
 // DFPlayer Mini
-// SoftwareSerial mySoftwareSerial(2, 3); // RX, TX
 uint16_t numTracksInFolder = 0;
 uint16_t currentTrack = 0;
 uint16_t currentMp3PlayerTrack = 0;
-static const uint8_t INIT_VOL = 15;
+static const uint8_t INIT_VOLUME = 15;
+static const uint8_t MAX_VOLUME_LIMIT = 25;
 
 NfcTag myCard;
 
@@ -224,7 +218,8 @@ void setup() {
   // DFPlayer Mini initialisieren
   // Log.trace("Init mp3 player." CR);
   mp3Player = new Mp3Player(MP3_PLAYER_RX_PIN, MP3_PLAYER_TX_PIN, BUSY_PIN, callbackObj);
-  mp3Player->setVolume(INIT_VOL);
+  mp3Player->setVolume(INIT_VOLUME);
+  mp3Player->setMaxVolumeLimit(MAX_VOLUME_LIMIT);
   // Log.notice("Play start sound: %s " CR, SystemSound::GetSystemSoundById(SystemSound::START_SOUND));
   mp3Player->playSystemSounds(SystemSound::START_SOUND);
   
