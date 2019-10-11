@@ -8,10 +8,12 @@
 // https://github.com/thijse/Arduino-Log/blob/master/examples/Log/Log.ino
 
 #include <DFMiniMp3.h>
-// https://github.com/Makuna/DFMiniMp3/blob/master/src/dfMiniMp3->h
+// https://wiki.dfrobot.com/DFPlayer_Mini_SKU_DFR0299
+// https://github.com/Makuna/DFMiniMp3
 
 #include "Mp3Notify.h"
 #include "ICallback.h"
+#include "SystemSound.h"
 
 class Mp3Player  {
     public: 
@@ -46,12 +48,22 @@ class Mp3Player  {
             setVolume(_volume-1);
         }
 
+        uint8_t getVolumen() {
+            return _volume;
+        }
+
         void sleep() {
             dfMiniMp3->sleep();
         }
 
         void loop() {
             dfMiniMp3->loop();
+
+            if (!this->isPlaying()) resetTrackValues();
+        }
+
+        void waitUntilTrackIsFinished() {
+            while(this->isPlaying()) delay(10);
         }
 
         void pause() {
@@ -62,8 +74,24 @@ class Mp3Player  {
             dfMiniMp3->start();
         }
 
-        void playFolderTrack(uint8_t folder, uint8_t track) {
-            dfMiniMp3->playFolderTrack(folder, track);
+        bool playFolderTrack(uint8_t folder, uint8_t track) {
+            currentFolder = folder;
+            currentTrack = track;
+
+            trackCountInFolder = dfMiniMp3->getFolderTrackCount(currentFolder);
+
+            if (trackCountInFolder > 0 && trackCountInFolder >= track) {
+                dfMiniMp3->playFolderTrack(currentFolder, currentTrack);
+                delay(250);
+                currentMp3PlayerTrackId = dfMiniMp3->getCurrentTrack();
+                Log.notice(F("Play track %d (dfPlayerTrackId: %d) of %d track(s) in folder %d." CR), 
+                    currentTrack, currentMp3PlayerTrackId, trackCountInFolder, currentFolder);
+                return true;
+
+            } else {                
+                resetTrackValues();
+                return false;
+            }
         }
 
         void playAdvertisement(uint16_t track) {
@@ -77,24 +105,72 @@ class Mp3Player  {
 
         //TODO: change system uint16_t track to enum
         void playSystemSounds(uint16_t track) {
+            resetTrackValues();
+
             dfMiniMp3->playMp3FolderTrack(track);
+            delay(250);
+            currentMp3PlayerTrackId = dfMiniMp3->getCurrentTrack();
+
+            Log.notice(F("Play system sound: %s (Id: %d, dfPlayerTrackId: %d)" CR), 
+                SystemSound::GetSystemSoundById(track), track, currentMp3PlayerTrackId);
         }
 
-        //TODO: Check if it is playing
         uint16_t getCurrentTrack() {
-            return dfMiniMp3->getCurrentTrack();
+            return currentTrack;
+        }
+
+        bool startSameTrackFromBeginning() {
+            if (currentFolder != 0 && currentTrack != 0) {
+                playFolderTrack(currentFolder, currentTrack);
+                return true;
+            } else {
+                dfMiniMp3->sleep();
+                return false;
+            }
         }
 
         bool isPlaying() { 
             return !digitalRead(BUSY_PIN); 
         }
 
+        void playNextSongInFolder() {
+            if (currentTrack > 0) {
+                if (currentTrack < trackCountInFolder) {
+                    playFolderTrack(currentFolder, currentTrack+1);
+                }
+            }
+        }
+
+        bool playPreviousSongInFolder() {
+            if (currentTrack > 1) {
+                playFolderTrack(currentFolder, currentTrack-1);
+            } else if (currentTrack == 1) {
+                startSameTrackFromBeginning();
+            } else {
+                sleep();
+                return false;
+            }
+            return true;
+        }
+
     private:
+        uint16_t currentFolder = 0;
+        uint16_t currentTrack = 0;
+        uint16_t trackCountInFolder = 0;
+        uint16_t currentMp3PlayerTrackId = 0;
+
         uint8_t _volume = 15;
         uint8_t _maxVolumeLimit = 30;
         uint8_t BUSY_PIN;
         SoftwareSerial *softwareSerial;
         DFMiniMp3<SoftwareSerial, Mp3Notify> *dfMiniMp3;
+
+        void resetTrackValues() {
+            currentFolder = 0;
+            currentTrack = 0;
+            trackCountInFolder = 0;
+            currentMp3PlayerTrackId = 0;
+        }
 };
 
 #endif

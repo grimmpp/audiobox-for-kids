@@ -19,7 +19,7 @@ class Mp3Notify {
 
         static void OnError(uint16_t errorCode) {
             // see DfMp3_Error for code meaning
-            Log.notice(CR "Com Error %d" CR, errorCode);
+            Log.notice("Com Error %d" CR, errorCode);
         }
 
         static void OnPlayFinished(uint16_t track) {
@@ -29,12 +29,12 @@ class Mp3Notify {
             Mp3Notify::callbackObj->notify(track);
         }
 
-        static void OnCardOnline(uint16_t code) { Log.notice("SD Card is online."); }
-        static void OnCardInserted(uint16_t code) { Log.notice("SD card has been inserted."); }
-        static void OnCardRemoved(uint16_t code) { Log.notice("SD card has been removed."); }
-        static void OnUsbOnline(uint16_t code) { Log.notice("USB is online."); }
-        static void OnUsbInserted(uint16_t code) { Log.notice("USB is ready."); }
-        static void OnUsbRemoved(uint16_t code) { Log.notice("USB has been removed."); }
+        static void OnCardOnline(uint16_t code) { Log.notice("SD Card is online." CR); }
+        static void OnCardInserted(uint16_t code) { Log.notice("SD card has been inserted." CR); }
+        static void OnCardRemoved(uint16_t code) { Log.notice("SD card has been removed." CR); }
+        static void OnUsbOnline(uint16_t code) { Log.notice("USB is online." CR); }
+        static void OnUsbInserted(uint16_t code) { Log.notice("USB is ready." CR); }
+        static void OnUsbRemoved(uint16_t code) { Log.notice("USB has been removed." CR); }
 
     private:
         static ICallback *callbackObj;

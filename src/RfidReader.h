@@ -36,48 +36,41 @@ class RfidReader {
     bool readCard(NfcTag *nfcTag) {
       bool returnValue = true;
       // Show some details of the PICC (that is: the tag/card)
-      Log.notice("Read NFC Card:" CR);
-      Log.notice("Card UID: %b" CR, mfrc522.uid.uidByte);
+      Log.notice(F("Read NFC Card:" CR));
+      Log.notice(F("Card UID: %b" CR), mfrc522.uid.uidByte);
       dump_byte_array(mfrc522.uid.uidByte, mfrc522.uid.size);
 
-      Log.notice(CR "PICC type: %s" CR, mfrc522.PICC_GetTypeName(mfrc522.PICC_GetType(mfrc522.uid.sak)));
+      Log.notice(F(CR "PICC type: %s" CR), mfrc522.PICC_GetTypeName(mfrc522.PICC_GetType(mfrc522.uid.sak)));
       // MFRC522::PICC_Type piccType = ;
 
       byte buffer[18];
       byte size = sizeof(buffer);
 
       // Authenticate using key A
-      Serial.println(F("Authenticating using key A..."));
+      Log.notice(F("Authenticating using key A..." CR));
       MFRC522::StatusCode status = (MFRC522::StatusCode)mfrc522.PCD_Authenticate(
           MFRC522::PICC_CMD_MF_AUTH_KEY_A, trailerBlock, &key, &(mfrc522.uid));
       if (status != MFRC522::STATUS_OK) {
-        Serial.print(F("PCD_Authenticate() failed: "));
+        Log.notice(F("PCD_Authenticate() failed: " CR));
         Serial.println(mfrc522.GetStatusCodeName(status));
         returnValue = false;
         return returnValue;
       }
 
       // Show the whole sector as it currently is
-      Serial.println(F("Current data in sector:"));
+      Log.notice(F("Current data in sector:" CR));
       mfrc522.PICC_DumpMifareClassicSectorToSerial(&(mfrc522.uid), &key, sector);
       Serial.println();
 
       // Read data from the block
-      Serial.print(F("Reading data from block "));
-      Serial.print(blockAddr);
-      Serial.println(F(" ..."));
+      Log.notice(F("Reading data from block %d ..." CR), blockAddr);
       status = (MFRC522::StatusCode)mfrc522.MIFARE_Read(blockAddr, buffer, &size);
       if (status != MFRC522::STATUS_OK) {
-        Serial.print(F("MIFARE_Read() failed: "));
-        Serial.println(mfrc522.GetStatusCodeName(status));
+        Log.notice(F("MIFARE_Read() failed: %s" CR), mfrc522.GetStatusCodeName(status));
         returnValue = false;
       }
-      Serial.print(F("Data in block "));
-      Serial.print(blockAddr);
-      Serial.println(F(":"));
+      Log.notice(F("Data in block %d:" CR), blockAddr);
       dump_byte_array(buffer, 16);
-      Serial.println();
-      Serial.println();
 
       uint32_t tempCookie;
       tempCookie = (uint32_t)buffer[0] << 24;
@@ -111,29 +104,18 @@ class RfidReader {
       MFRC522::StatusCode status = (MFRC522::StatusCode)mfrc522.PCD_Authenticate(
           MFRC522::PICC_CMD_MF_AUTH_KEY_B, trailerBlock, &key, &(mfrc522.uid));
       if (status != MFRC522::STATUS_OK) {
-        Log.error("NFC Card PCD_Authenticate() failed: %s" CR, mfrc522.GetStatusCodeName(status));
+        Log.error(F("NFC Card PCD_Authenticate() failed: %s" CR), mfrc522.GetStatusCodeName(status));
         // mp3Player.playMp3FolderTrack(Mp3CommandMap::COMMAND_ID_ERROR);
         return false;
       }
 
       // Write data to the block
-      Log.notice("Writing data into block: %d " CR, blockAddr);
-      Log.notice(" ..." CR);
-      // byte size = sizeof(buffer);
+      Log.notice(F("Writing data into block: %d ..." CR), blockAddr);
       dump_byte_array(buffer, 16); 
       Log.notice("" CR);
 
       status = (MFRC522::StatusCode)mfrc522.MIFARE_Write(blockAddr, buffer, 16);
       return status == MFRC522::STATUS_OK;
-      // if (status != MFRC522::STATUS_OK) {
-      //   Log.notice("MIFARE_Write() failed: %s" CR, mfrc522.GetStatusCodeName(status));
-      //   mp3Player.playMp3FolderTrack(Mp3CommandMap::COMMAND_ID_ERROR);
-      // }
-      // else {
-        // mp3Player.playMp3FolderTrack(Mp3CommandMap::COMMAND_ID_TAG_OK);
-      // }
-      // Serial.println();
-      // delay(100);
     }
 
     bool isNewCardPresent() {
@@ -164,6 +146,8 @@ class RfidReader {
         Serial.print(buffer[i] < 0x10 ? " 0" : " ");
         Serial.print(buffer[i], HEX);
       }
+      Serial.println();
+      Serial.println();
     }
 };
 

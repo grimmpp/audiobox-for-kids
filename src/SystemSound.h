@@ -35,28 +35,7 @@ public:
         char const *name;
     };
 
-    static Mp3SystemSoundMap MP3_SYSTEM_SOUND_MAP[20] = {
-        {ID::UNKNOWN, "Unknown Track"},
-        {ID::NEW_TAG, "New Tag"},
-        {ID::TAG_LINKED, "Tag linked"},
-        {ID::MODE_RANDOM_EPISODE, "Mode: Random EPISODE"},
-        {ID::MODE_ALBUM, "MODE: Album"},
-        {ID::MODE_PARTY, "Mode: Party"},
-        {ID::MODE_SINGLE_TRACK, "Mode: Single Track"},
-        {ID::MODE_AUDIO_BOOK, "Mode: Audio Book"},
-        {ID::ADMIN, "Admin"},
-        {ID::SELECT_FILE, "Select File"},
-        {ID::SAY_NUMBER_ASK, "Ask for telling numbers"},
-        {ID::SAY_NUMBER_NO, "Say NO for telling numbers"},
-        {ID::SAY_NUMBER_YES, "Say YES for telling numbers"},
-        {ID::TAG_OK, "Tag OK"},
-        {ID::ERROR, "Error Message"},
-        {ID::START_SOUND, "Start Sound"},
-        {ID::RESET_TAG, "Reset Tag"},
-        {ID::RESET_TAG_OK, "Reset Tag OK"},
-        {ID::RESET_ABORTED, "Reset Tag Aborted"},
-        {ID::RESET_OK, "Reset OK"},
-    };
+    static Mp3SystemSoundMap MP3_SYSTEM_SOUND_MAP[20];
 
     static const char* GetSystemSoundById(uint16_t id) {
 
