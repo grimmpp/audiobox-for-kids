@@ -21,6 +21,7 @@ public:
         SAY_NUMBER_ASK = 330,
         SAY_NUMBER_NO = 331,
         SAY_NUMBER_YES = 332,
+        BUTTON_SOUND = 350,
         TAG_OK = 400,
         ERROR = 401,
         START_SOUND = 500,
@@ -35,7 +36,7 @@ public:
         char const *name;
     };
 
-    static Mp3SystemSoundMap MP3_SYSTEM_SOUND_MAP[20];
+    static Mp3SystemSoundMap MP3_SYSTEM_SOUND_MAP[21];
 
     static const char* GetSystemSoundById(uint16_t id) {
 

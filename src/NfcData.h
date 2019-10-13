@@ -3,6 +3,9 @@
 
 #include <Arduino.h>
 
+#include <ArduinoLog.h>
+// https://github.com/thijse/Arduino-Log/blob/master/examples/Log/Log.ino
+
 // this object stores nfc tag data
 struct NfcTag {
   uint32_t cookie;
@@ -14,7 +17,8 @@ struct NfcTag {
 
 class NFC_CARD_MODE {
 public:
-  enum {
+  enum ID : uint8_t {
+    UNASSIGNED = 0,
     AUDIO_BOOK = 1,
     ALBUM = 2,
     PARTY = 3,
@@ -23,5 +27,10 @@ public:
     ADMIN = 6
   };
 };
+
+void printNfcCardInfo(NfcTag nfcTag) {
+  Log.notice(F("NFC Card: cookie: %d, version: %d, folder: %d, mode: %d, special: %d" CR),
+    nfcTag.cookie, nfcTag.version, nfcTag.folder, nfcTag.mode, nfcTag.special);
+}
 
 #endif

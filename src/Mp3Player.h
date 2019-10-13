@@ -59,7 +59,7 @@ class Mp3Player  {
         void loop() {
             dfMiniMp3->loop();
 
-            if (!this->isPlaying()) resetTrackValues();
+            // if (!this->isPlaying()) resetTrackValues();
         }
 
         void waitUntilTrackIsFinished() {
@@ -81,6 +81,7 @@ class Mp3Player  {
             trackCountInFolder = dfMiniMp3->getFolderTrackCount(currentFolder);
 
             if (trackCountInFolder > 0 && trackCountInFolder >= track) {
+                currentTrackIsSystemSound = false;
                 dfMiniMp3->playFolderTrack(currentFolder, currentTrack);
                 delay(250);
                 currentMp3PlayerTrackId = dfMiniMp3->getCurrentTrack();
@@ -88,10 +89,11 @@ class Mp3Player  {
                     currentTrack, currentMp3PlayerTrackId, trackCountInFolder, currentFolder);
                 return true;
 
-            } else {                
-                resetTrackValues();
-                return false;
-            }
+            } 
+            // else {                
+            //     resetTrackValues();
+            //     return false;
+            // }
         }
 
         void playAdvertisement(uint16_t track) {
@@ -103,10 +105,15 @@ class Mp3Player  {
             return dfMiniMp3->getFolderTrackCount(folder);
         }
 
+        uint16_t playRandomFolderTrack() {
+            
+        }
+
         //TODO: change system uint16_t track to enum
         void playSystemSounds(uint16_t track) {
-            resetTrackValues();
+            // resetTrackValues();
 
+            currentTrackIsSystemSound = true;
             dfMiniMp3->playMp3FolderTrack(track);
             delay(250);
             currentMp3PlayerTrackId = dfMiniMp3->getCurrentTrack();
@@ -119,8 +126,13 @@ class Mp3Player  {
             return currentTrack;
         }
 
+        uint16_t getCurrentFolder() {
+            return currentFolder;
+        }
+
         bool startSameTrackFromBeginning() {
-            if (currentFolder != 0 && currentTrack != 0) {
+            Log.notice(F("Play same track: currentFolder %d, currentTrack %d" CR), currentFolder, currentTrack);
+            if (currentFolder != 0 || currentTrack != 0) {
                 playFolderTrack(currentFolder, currentTrack);
                 return true;
             } else {
@@ -133,15 +145,18 @@ class Mp3Player  {
             return !digitalRead(BUSY_PIN); 
         }
 
-        void playNextSongInFolder() {
+        bool playNextSongInFolder() {
+            Log.notice(F("Play next track." CR));
             if (currentTrack > 0) {
                 if (currentTrack < trackCountInFolder) {
-                    playFolderTrack(currentFolder, currentTrack+1);
+                    return playFolderTrack(currentFolder, currentTrack+1);
                 }
             }
+            return false;
         }
 
         bool playPreviousSongInFolder() {
+            Log.notice(F("Play previous track: currentFolder %d, currentTrack %d" CR), currentFolder, currentTrack);
             if (currentTrack > 1) {
                 playFolderTrack(currentFolder, currentTrack-1);
             } else if (currentTrack == 1) {
@@ -153,11 +168,16 @@ class Mp3Player  {
             return true;
         }
 
+        bool isCurrentTrackSystemSound() {
+            return currentTrackIsSystemSound;
+        }
+
     private:
         uint16_t currentFolder = 0;
         uint16_t currentTrack = 0;
         uint16_t trackCountInFolder = 0;
         uint16_t currentMp3PlayerTrackId = 0;
+        bool currentTrackIsSystemSound = false;
 
         uint8_t _volume = 15;
         uint8_t _maxVolumeLimit = 30;

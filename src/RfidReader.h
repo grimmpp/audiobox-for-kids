@@ -68,6 +68,7 @@ class RfidReader {
       if (status != MFRC522::STATUS_OK) {
         Log.notice(F("MIFARE_Read() failed: %s" CR), mfrc522.GetStatusCodeName(status));
         returnValue = false;
+        return returnValue;
       }
       Log.notice(F("Data in block %d:" CR), blockAddr);
       dump_byte_array(buffer, 16);
@@ -84,10 +85,16 @@ class RfidReader {
       nfcTag->mode = buffer[6];
       nfcTag->special = buffer[7];
 
+      printNfcCardInfo(*nfcTag);
+
       return returnValue;
     }
 
     bool writeCard(NfcTag nfcTag) {
+      Log.notice(F("Write data to nfc tag." CR));
+
+      printNfcCardInfo(nfcTag);
+
       byte buffer[16] = {0x13, 0x37, 0xb3, 0x47, // 0x1337 0xb347 magic cookie to
                                                 // identify our nfc tags
                         0x01,                   // version 1
@@ -100,12 +107,11 @@ class RfidReader {
       // MFRC522::PICC_Type mifareType = mfrc522.PICC_GetType(mfrc522.uid.sak);
 
       // Authenticate using key B
-      // Log.notice("Authenticating again using key B..." CR);
+      Log.notice(F("Authenticating again using key B..." CR));
       MFRC522::StatusCode status = (MFRC522::StatusCode)mfrc522.PCD_Authenticate(
           MFRC522::PICC_CMD_MF_AUTH_KEY_B, trailerBlock, &key, &(mfrc522.uid));
       if (status != MFRC522::STATUS_OK) {
         Log.error(F("NFC Card PCD_Authenticate() failed: %s" CR), mfrc522.GetStatusCodeName(status));
-        // mp3Player.playMp3FolderTrack(Mp3CommandMap::COMMAND_ID_ERROR);
         return false;
       }
 

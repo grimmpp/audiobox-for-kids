@@ -1,6 +1,6 @@
 #include "SystemSound.h"
 
-SystemSound::Mp3SystemSoundMap SystemSound::MP3_SYSTEM_SOUND_MAP[20] = {
+SystemSound::Mp3SystemSoundMap SystemSound::MP3_SYSTEM_SOUND_MAP[21] = {
         {SystemSound::UNKNOWN, "Unknown Track"},
         {SystemSound::NEW_TAG, "New Tag"},
         {SystemSound::TAG_LINKED, "Tag linked"},
@@ -14,6 +14,7 @@ SystemSound::Mp3SystemSoundMap SystemSound::MP3_SYSTEM_SOUND_MAP[20] = {
         {SystemSound::SAY_NUMBER_ASK, "Ask for telling numbers"},
         {SystemSound::SAY_NUMBER_NO, "Say NO for telling numbers"},
         {SystemSound::SAY_NUMBER_YES, "Say YES for telling numbers"},
+        {SystemSound::BUTTON_SOUND, "Button Sound"},
         {SystemSound::TAG_OK, "Tag OK"},
         {SystemSound::ERROR, "Error Message"},
         {SystemSound::START_SOUND, "Start Sound"},
