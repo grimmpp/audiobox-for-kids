@@ -91,7 +91,7 @@ void nextTrack(uint16_t track) {
       Log.notice(F("Party mode: Play random track %d" CR), randomTrack);
       mp3Player->playFolderTrack(mp3Player->getCurrentFolder(), randomTrack);
       break;
-      
+
     case NFC_CARD_MODE::SINGLE_TRACK:
       Log.notice(F("Single Track: do nothing." CR));
       mp3Player->sleep();
@@ -132,8 +132,9 @@ static void previousTrack() {
       break;
   
     case NFC_CARD_MODE::SINGLE_TRACK:
-      Log.notice(F("Single Track: Start same track from beginning." CR));
-      mp3Player->startSameTrackFromBeginning();
+      Log.notice(F("Single Track: Do nothing." CR));
+      // Playing the same track can be done by pressing start/stop button
+      mp3Player->sleep();
       break;
 
     case NFC_CARD_MODE::AUDIO_BOOK_WITH_BOOKMARK:
@@ -325,6 +326,7 @@ void loop() {
     } else if (downButton.wasReleased()) {
       Log.notice(F("Previous button was pressed." CR));
       // mp3Player->playAdvertisement(SystemSound::BUTTON_SOUND);
+      // mp3Player->playAdvertisement(1);
       previousTrack();
     }
     

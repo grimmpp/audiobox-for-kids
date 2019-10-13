@@ -97,6 +97,7 @@ class Mp3Player  {
         }
 
         void playAdvertisement(uint16_t track) {
+            Log.notice(F("Play advert: %d" CR), track);
             dfMiniMp3->playAdvertisement(track);
         }
 
@@ -105,21 +106,16 @@ class Mp3Player  {
             return dfMiniMp3->getFolderTrackCount(folder);
         }
 
-        uint16_t playRandomFolderTrack() {
-            
-        }
-
-        //TODO: change system uint16_t track to enum
-        void playSystemSounds(uint16_t track) {
+        void playSystemSounds(SystemSound::ID systemSoundId) {
             // resetTrackValues();
 
             currentTrackIsSystemSound = true;
-            dfMiniMp3->playMp3FolderTrack(track);
+            dfMiniMp3->playMp3FolderTrack(systemSoundId);
             delay(250);
             currentMp3PlayerTrackId = dfMiniMp3->getCurrentTrack();
 
             Log.notice(F("Play system sound: %s (Id: %d, dfPlayerTrackId: %d)" CR), 
-                SystemSound::GetSystemSoundById(track), track, currentMp3PlayerTrackId);
+                SystemSound::GetSystemSoundById(systemSoundId), systemSoundId, currentMp3PlayerTrackId);
         }
 
         uint16_t getCurrentTrack() {
