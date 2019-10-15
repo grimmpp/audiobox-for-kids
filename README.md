@@ -6,10 +6,21 @@ This project is about an audiobox which allows small kids, who cannot read, don'
 # What can it do?
 ...
 
+# Hardware
+<img src="/electronics/Schematic.png" height=200 />
+
+# Arduino Software
 ## PlatformIO commands:
 * Build code: `pio run`
 * Build and upload code: `pio run -v -t upload`
 * Open serial monitor: `pio device monitor -b 115200`
+
+# Thanks to Thorsten Voß
+Thorsten Voß had the brilliant idea to build such a audiobox for little kids. He realized his idea also with almost the same parts. His tutorial and big community is really great and inspired me a lot.
+* [Website TonUINO](https://www.voss.earth/tonuino/)
+* [Community TonUINO](https://discourse.voss.earth/)
+
+In the community a lot of hard- and software issues are discussed and solved. There are also a [big variety of ideas who to build a case](https://discourse.voss.earth/t/tonuino-gehaeuse-galerie/786). Thorsten also offers a [board](https://discourse.voss.earth/t/neue-platine-version-1-51/63) on which you can put the Arduino Nano, DfMiniPlayer, and to which you can connect the RFID Reader. (Wake up logic for Power Bank is not included.)
 
 ## Links
 * [DFRobot: DfPlayer Mini](https://wiki.dfrobot.com/DFPlayer_Mini_SKU_DFR0299)
