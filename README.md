@@ -20,6 +20,7 @@ This project is about an audiobox which allows small kids, who cannot read, don'
 Thorsten Voß had the brilliant idea to build such a audiobox for little kids. He realized his idea also with almost the same parts. His tutorial and big community is really great and inspired me a lot.
 * [Website TonUINO](https://www.voss.earth/tonuino/)
 * [Community TonUINO](https://discourse.voss.earth/)
+* [GitHub Repository TonUINO](https://github.com/xfjx/TonUINO)
 
 In the community a lot of hard- and software issues are discussed and solved. There are also a [big variety of ideas who to build a case](https://discourse.voss.earth/t/tonuino-gehaeuse-galerie/786). Thorsten also offers a [board](https://discourse.voss.earth/t/neue-platine-version-1-51/63) on which you can put the Arduino Nano, DfMiniPlayer, and to which you can connect the RFID Reader. (Wake up logic for Power Bank is not included.)
 
