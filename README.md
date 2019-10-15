@@ -7,6 +7,7 @@ This project is about an audiobox which allows small kids, who cannot read, don'
 ...
 
 # Hardware
+* **[Part List](/part-list.md)** <br />
 <img src="/electronics/Schematic.png" height=200 />
 
 # Arduino Software
