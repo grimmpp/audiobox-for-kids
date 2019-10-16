@@ -14,4 +14,4 @@ RUN pip install -U platformio
 RUN cd /home && git clone https://github.com/grimmpp/audiobox-for-kids.git
 
 # run platformio: download all dependencies and build projects
-RUN cd /home/audiobox-for-kids && pio run
+RUN cd /home/audiobox-for-kids && pio run -v
