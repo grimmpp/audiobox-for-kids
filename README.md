@@ -16,7 +16,10 @@ Before a tag can be used you need to tell the audiobox what should be played. Af
 * **Audio Book**
 * **Album**
 * **Party**
-* **Single Track**
+* **Single Track** <br />
+  By placing a NCF Tag on the audiobox it will play only one single track which is configured on the NFC Tag and stops afterwards. <br />
+  Button next song and previous song is not working in this mode.  <br />
+  Button play/pause pauses, continuous, or restarts the track after it was finished.
 * **Audio Book with Bookmark**
 
 # Hardware
