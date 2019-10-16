@@ -1,7 +1,7 @@
 # Parts
-* Arduino Nano (See Starter kit for TonUINO)
-* DFMiniPlayer (See Starter kit for TonUINO)
-* RFID Reader RC522 (See Starter kit for TonUINO)
+* Arduino Nano (See Starter Kit for TonUINO)
+* DFMiniPlayer (See Starter Kit for TonUINO)
+* RFID Reader RC522 (See Starter Kit for TonUINO)
 * Electrolytic capacitor 100µF
 * Film capacitor 100nF
 * Resistors 3x1K, 0,1K
@@ -25,3 +25,13 @@
 
 # Software
 * is contained in this git repo.
+
+# Hardware Tooling
+* Ususal stuff like wire cutter, screw driver, ...
+* Soldering station
+* Depending what kind of case you build: saw, drill, 3D-printer, ...
+
+# Software Tooling
+* [Platformio (pio)](https://docs.platformio.org/en/latest/ide/vscode.html) (required for building and pushing code to arduino)
+* [VSCode](https://code.visualstudio.com/) (optional only required for chaning code) 
+* docker (optional for running platformio in docker container / portable version)
