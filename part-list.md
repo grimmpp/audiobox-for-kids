@@ -1,7 +1,7 @@
 # Parts
 * **Arduino Nano** with ATmega328 (old bootloader in this case) (See Starter Kit for TonUINO)
   Depending on wich version you buy you need to configure your project/IDE so that the bootloader is compatible. New versions have a better and faster bootloader. 
-* **DFMiniPlayer** (See Starter Kit for TonUINO) <br />
+* **DFMiniPlayer** [Spec](https://wiki.dfrobot.com/DFPlayer_Mini_SKU_DFR0299#target_1) (See Starter Kit for TonUINO) <br />
   (There are a lot of modules with different controllers/decoders. Ensure you buy one with MH-ET LIVE (MH2024K-24SS) e.g. [this one](https://www.ebay.de/itm/Arduino-WeMos-MP3-Player-Decoder-Modul-Card-Reader-MH2024K-DFPlayer-UART-3-3-5V/283613104099?hash=item4208a887e3:g:7P8AAOSw6-Nde04L). This one has a really good sound quality and runs stable. I really had problems with other decoders which made white noice and did not work stable. [Here](http://discourse.voss.earth/t/dfplayer-verschiedene-versionen/681/13) is also a deeper discussion and experiences about the decoders.)
 * **RFID Reader RC522** (See Starter Kit for TonUINO)
 * Electrolytic **capacitor 100µF** for voltage stabilization
