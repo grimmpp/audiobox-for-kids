@@ -1,5 +1,5 @@
 # Parts
-* Arduino Nano (See Starter Kit for TonUINO)
+* Arduino Nano with ATmega328 (old bootloader in this case) (See Starter Kit for TonUINO)
 * DFMiniPlayer (See Starter Kit for TonUINO)
 * RFID Reader RC522 (See Starter Kit for TonUINO)
 * Electrolytic capacitor 100µF
