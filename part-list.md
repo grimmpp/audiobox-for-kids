@@ -13,7 +13,8 @@
 * **Power Switch**
 * **Power Jack**
 * **External Power Adapter** (5V Charger)
-* **Power Bank** as battery [Amazon Offer](https://www.amazon.de/gp/product/B075ZNG92W/ref=ppx_yo_dt_b_asin_title_o02_s00?ie=UTF8&psc=1)
+* **Power Bank** as battery [Amazon Offer](https://www.amazon.de/gp/product/B075ZNG92W/ref=ppx_yo_dt_b_asin_title_o02_s00?ie=UTF8&psc=1) <br />
+  Power Banks have a smart logic which switches the power bank off after about 30sec if the load is too small. Therefore I build a logic to keep it alive.
 * **Cable for wiring**
 * **Perfboard** <br />
   You can actually also buy the [board](https://discourse.voss.earth/t/neue-platine-version-1-51/63) designed by Thorsten Voß. The board from Thorsten Voß unfortunately does not contain a logic to keep the power bank alive.
