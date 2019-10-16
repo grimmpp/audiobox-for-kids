@@ -29,7 +29,9 @@
 **Starter Kit TonUINO** on [Amazon Offer](https://www.amazon.de/AZDelivery-TonUINO-Arduino-Player-Karten/dp/B07JLBGYQ6/ref=sxin_5_ac_d_rm?__mk_de_DE=%C3%85M%C3%85%C5%BD%C3%95%C3%91&ac_md=0-0-dG9udWlubw%3D%3D-ac_d_rm&keywords=tonuino&pd_rd_i=B07JLBGYQ6&pd_rd_r=3e28fc6e-1ba6-410d-b2b4-171652f702df&pd_rd_w=IqVSC&pd_rd_wg=WVzju&pf_rd_p=1307f5d7-7a93-4246-82b9-71e02e065a30&pf_rd_r=866KF5YW2B88GGM4TGM5&psc=1&qid=1571168562)
 
 # Software
-* is contained in this git repo.
+* **Arduino Software** which is contained in this git repo.
+* **System Sound Files** which is contained in this git repo.
+* **Your mp3 files** you want to play.
 
 # Hardware Tooling
 * Ususal stuff like wire cutter, screw driver, ...
