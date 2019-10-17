@@ -1,8 +1,7 @@
 #ifndef Mp3CommandMap_H
 #define Mp3CommandMap_H
 
-#include <Arduino.h>
-
+#include <stdint.h>
 
 class SystemSound {
 public:
