@@ -44,8 +44,8 @@ NfcTag myCard;
 
 uint8_t voiceMenu(uint16_t numberOfOptions, SystemSound::ID startMessage, uint8_t messageOffset,
               bool preview = false, uint8_t previewFromFolder = 0);
-void resetCard(void);
-void setupCard(void);
+bool resetCard(void);
+NfcTag setupCard(NfcTag oldCard);
 
 class Callback : public ICallback {
 public:
@@ -166,7 +166,7 @@ void loop() {
         mp3Player->playAdvertisement(currentTrack);
       } else {
         // mp3Player->playAdvertisement(SystemSound::BUTTON_SOUND);
-        resetCard();
+        if (resetCard()) myCard = setupCard(myCard);
         rfidReader->halt();
       }
     }
@@ -225,7 +225,7 @@ void loop() {
     }
     else {
       // Configure new nfc card
-      setupCard();
+      setupCard(myCard);
     }
 
     rfidReader->halt();
@@ -289,7 +289,7 @@ uint8_t voiceMenu(uint16_t numberOfOptions, SystemSound::ID startMessage, System
   return returnValue;
 }
 
-void resetCard() {
+bool resetCard() {
   Log.notice(F("Reset Nfc Card: " CR));
   mp3Player->playSystemSounds(SystemSound::RESET_TAG);
 
@@ -301,67 +301,73 @@ void resetCard() {
     if (upButton.wasReleased() || downButton.wasReleased()) {
       Log.notice(F("Reset Card was cancelled." CR));
       mp3Player->playSystemSounds(SystemSound::RESET_ABORTED);
-      return;
+      return false;
     }
   } while (!rfidReader->isNewCardPresent());
 
   if (!rfidReader->readCardSerial()) {
     mp3Player->playSystemSounds(SystemSound::ERROR);
-    return;
+    return false;
   }
   Log.notice(F("NFC Card was recognized!" CR));
 
   Log.notice(F("Reset card and write to card empty data." CR));
-  myCard.cookie = 0;
-  myCard.folder = 0;
-  myCard.mode = 0;
-  myCard.special = 0;
-  myCard.version = 0;
+  NfcTag nfcCard;
+  nfcCard.cookie = 0;
+  nfcCard.folder = 0;
+  nfcCard.mode = 0;
+  nfcCard.special = 0;
+  nfcCard.version = 0;
 
-  if (rfidReader->writeCard(myCard)) {
+  if (rfidReader->writeCard(nfcCard)) {
     Log.notice(F("Nfc card was successfully reset." CR));
-    setupCard();
+    return true;
   } 
   else {
     mp3Player->playSystemSounds(SystemSound::ERROR);
+    return false;
   }
 }
 
-void setupCard() {
+NfcTag setupCard(NfcTag oldCard) {
+  NfcTag ncfCard = oldCard;
   mp3Player->pause();
   Log.notice(F("Configure new card:" CR));
 
   // Ask for mapping folder
   Log.notice(F("Start menu to define folder." CR));
-  myCard.folder = voiceMenu(99, SystemSound::NEW_TAG, (SystemSound::ID)0, true);
+  ncfCard.folder = voiceMenu(99, SystemSound::NEW_TAG, (SystemSound::ID)0, true);
 
   // Ask for play mode
   Log.notice(F("Start menu to define play mode." CR));
-  myCard.mode = voiceMenu(6, SystemSound::TAG_LINKED, SystemSound::TAG_LINKED);
+  ncfCard.mode = voiceMenu(6, SystemSound::TAG_LINKED, SystemSound::TAG_LINKED);
 
   // Create bookmark 
   Log.notice(F("Create bookmark for new folder" CR));
-  EEPROM.write(myCard.folder,1);
+  EEPROM.write(ncfCard.folder,1);
 
   // Ask for single track in case of single track mode
-  if (myCard.mode == NFC_CARD_MODE::SINGLE_TRACK) {
+  if (ncfCard.mode == NFC_CARD_MODE::SINGLE_TRACK) {
     Log.notice(F("Start menu to define single track." CR));
-    myCard.special = voiceMenu(mp3Player->getFolderTrackCount(myCard.folder), 
+    ncfCard.special = voiceMenu(mp3Player->getFolderTrackCount(ncfCard.folder), 
                                 SystemSound::SELECT_FILE, (SystemSound::ID)0,
-                                true, myCard.folder);
+                                true, ncfCard.folder);
   }
 
   // Admin Mode
-  if (myCard.mode == NFC_CARD_MODE::ADMIN) {
+  if (ncfCard.mode == NFC_CARD_MODE::ADMIN) {
     Log.notice(F("Start menu to define file for admin mode." CR));
-    myCard.special = voiceMenu(3, SystemSound::SELECT_FILE, SystemSound::SELECT_FILE);
+    ncfCard.special = voiceMenu(3, SystemSound::SELECT_FILE, SystemSound::SELECT_FILE);
   }
 
   // Configuration completed ... write data to card
   mp3Player->pause();
-  if (rfidReader->writeCard(myCard)) {
+  if (rfidReader->writeCard(ncfCard)) {
     Log.notice(F("Wrote data to nfc tag successfully."));
-  } else {
+    return ncfCard;
+  } 
+  else {
     mp3Player->playSystemSounds(SystemSound::ERROR);
+    return oldCard;
   }
 }
