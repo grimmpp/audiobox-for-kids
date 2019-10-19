@@ -15,7 +15,7 @@
 #include "ICallback.h"
 #include "SystemSound.h"
 
-class Mp3Player  {
+class Mp3Player {
     public: 
 
         Mp3Player(uint8_t receivePin, uint8_t transmitPin, uint8_t busyPin, ICallback *callbackObj) {
