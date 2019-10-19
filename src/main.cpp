@@ -43,11 +43,11 @@ NfcTag myCard;
 
 bool knownCard = false;
 
-int voiceMenu(int numberOfOptions, int startMessage, int messageOffset,
-              bool preview = false, int previewFromFolder = 0);
+uint8_t voiceMenu(uint16_t numberOfOptions, SystemSound::ID startMessage, uint8_t messageOffset,
+              bool preview = false, uint8_t previewFromFolder = 0);
 void resetCard(void);
 void setupCard(void);
-void nextTrack(uint16_t, NFC_CARD_MODE::ID);
+static void nextTrack(uint16_t, NFC_CARD_MODE::ID);
 
 class Callback : public ICallback {
 public:
@@ -82,11 +82,11 @@ static void nextTrack(uint16_t track, NFC_CARD_MODE::ID playMode) {
       mp3Player->playNextSongInFolder();
       break;
   
-    case NFC_CARD_MODE::PARTY:
-      uint16_t randomTrack = random(1, mp3Player->getCurrentFolder());
+    case NFC_CARD_MODE::PARTY: {
+      uint16_t randomTrack = random(1, mp3Player->getFolderTrackCount(mp3Player->getCurrentFolder()));
       Log.notice(F("Party mode: Play random track %d" CR), randomTrack);
       mp3Player->playFolderTrack(mp3Player->getCurrentFolder(), randomTrack);
-      break;
+      break; }
 
     case NFC_CARD_MODE::SINGLE_TRACK:
       Log.notice(F("Single Track: do nothing." CR));
@@ -99,6 +99,10 @@ static void nextTrack(uint16_t track, NFC_CARD_MODE::ID playMode) {
         mp3Player->playFolderTrack(mp3Player->getCurrentFolder(), 1);
       }
       EEPROM.write(mp3Player->getCurrentFolder(), mp3Player->getCurrentTrack());
+      break;
+
+    case NFC_CARD_MODE::ADMIN:
+      Log.notice(F("Admin mode ... not defined." CR));
       break;
   }
 }
@@ -139,6 +143,10 @@ static void previousTrack(NFC_CARD_MODE::ID playMode) {
       // Save bookmark into EEPROM
       EEPROM.write(mp3Player->getCurrentFolder(), mp3Player->getCurrentTrack());
       break;
+
+    case NFC_CARD_MODE::ADMIN:
+      Log.notice(F("Admin mode ... not defined." CR));
+      break;
   }
 }
 
@@ -151,7 +159,7 @@ static void playTrack(NfcTag nfcCard) {
       break;
 
     case NFC_CARD_MODE::AUDIO_BOOK:
-      Log.notice(F("Audio Book Mode: Random track will be played."CR));
+      Log.notice(F("Audio Book Mode: Random track will be played." CR));
       nextTrack = random(1, mp3Player->getCurrentFolder() + 1);
       break;
   
@@ -173,6 +181,10 @@ static void playTrack(NfcTag nfcCard) {
     case NFC_CARD_MODE::AUDIO_BOOK_WITH_BOOKMARK:
       Log.notice(F("Audio Book Mode with bookmarks is active. All tracks in the folder %d will be played one after the other and all completed tracks will be bookmarked." CR));
       nextTrack = EEPROM.read(nfcCard.folder);          
+      break;
+
+    case NFC_CARD_MODE::ADMIN:
+      Log.notice(F("Admin mode ... not defined." CR));
       break;
   }
 
@@ -352,8 +364,8 @@ void loop() {
   }
 }
 
-void playPreview(int messageOffset, bool preview, int previewFromFolder, int returnValue){
-  mp3Player->playSystemSounds(messageOffset + returnValue);
+void playPreview(SystemSound::ID messageOffset, bool preview, uint8_t previewFromFolder, uint8_t returnValue){
+  mp3Player->playSystemSounds((SystemSound::ID) (messageOffset + returnValue));
   delay(1000);
   if (preview) {
     do {
@@ -366,10 +378,10 @@ void playPreview(int messageOffset, bool preview, int previewFromFolder, int ret
 }
 
 
-int voiceMenu(int numberOfOptions, int startMessage, int messageOffset,
-              bool preview = false, int previewFromFolder = 0) {
-  int returnValue = 0;
-  if (startMessage != 0) mp3Player->playSystemSounds(startMessage);
+uint8_t voiceMenu(uint16_t numberOfOptions, SystemSound::ID startMessage, SystemSound::ID messageOffset,
+              bool preview = false, uint8_t previewFromFolder = 0) {
+  uint8_t returnValue = 0;
+  if (startMessage != SystemSound::UNKNOWN) mp3Player->playSystemSounds(startMessage);
 
   do {
     pauseButton.read();
@@ -454,7 +466,7 @@ void setupCard() {
 
   // Ask for mapping folder
   Log.notice(F("Start menu to define folder." CR));
-  myCard.folder = voiceMenu(99, SystemSound::NEW_TAG, 0, true);
+  myCard.folder = voiceMenu(99, SystemSound::NEW_TAG, (SystemSound::ID)0, true);
 
   // Ask for play mode
   Log.notice(F("Start menu to define play mode." CR));
@@ -468,7 +480,7 @@ void setupCard() {
   if (myCard.mode == NFC_CARD_MODE::SINGLE_TRACK) {
     Log.notice(F("Start menu to define single track." CR));
     myCard.special = voiceMenu(mp3Player->getFolderTrackCount(myCard.folder), 
-                                SystemSound::SELECT_FILE, 0,
+                                SystemSound::SELECT_FILE, (SystemSound::ID)0,
                                 true, myCard.folder);
   }
 

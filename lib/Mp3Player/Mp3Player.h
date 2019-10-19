@@ -94,6 +94,8 @@ class Mp3Player  {
             //     resetTrackValues();
             //     return false;
             // }
+
+            return false;
         }
 
         void playAdvertisement(uint16_t track) {
