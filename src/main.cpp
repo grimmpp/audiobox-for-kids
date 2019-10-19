@@ -47,22 +47,19 @@ int voiceMenu(int numberOfOptions, int startMessage, int messageOffset,
               bool preview = false, int previewFromFolder = 0);
 void resetCard(void);
 void setupCard(void);
-void nextTrack(uint16_t);
+void nextTrack(uint16_t, NFC_CARD_MODE::ID);
 
 class Callback : public ICallback {
 public:
   void notify(uint8_t track) {
-    nextTrack(track);
+    nextTrack(track, (NFC_CARD_MODE::ID)myCard.mode);
   }
 };
 ICallback *callbackObj = new Callback();
 
 Mp3Player * mp3Player;
 
-// Leider kann das Modul keine Queue abspielen.
-// static uint16_t _lastTrackFinished;
-
-void nextTrack(uint16_t track) {
+static void nextTrack(uint16_t track, NFC_CARD_MODE::ID playMode) {
   Log.notice(F("Start next track. Play Mode: %d, known card: %b" CR), myCard.mode, knownCard);
 
   if (mp3Player->isCurrentTrackSystemSound()) {
@@ -70,8 +67,7 @@ void nextTrack(uint16_t track) {
     return;
   }
 
-  NFC_CARD_MODE::ID mode = (NFC_CARD_MODE::ID) myCard.mode;
-  switch(mode) {
+  switch(playMode) {
     case NFC_CARD_MODE::UNASSIGNED:
       Log.notice(F("No play mode assigned." CR));
       break;
@@ -107,10 +103,10 @@ void nextTrack(uint16_t track) {
   }
 }
 
-static void previousTrack() {
+static void previousTrack(NFC_CARD_MODE::ID playMode) {
   Log.notice(F("Play previous track." CR));
 
-  switch(myCard.mode) {
+  switch(playMode) {
     case NFC_CARD_MODE::UNASSIGNED:
       Log.notice(F("No play mode assigned." CR));
       mp3Player->sleep();
@@ -315,7 +311,7 @@ void loop() {
     } else if (upButton.wasReleased()) {
       Log.notice(F("Next button was pressed." CR));
       // mp3Player->playAdvertisement(SystemSound::BUTTON_SOUND);
-      nextTrack(random(65536));
+      nextTrack(random(65536), (NFC_CARD_MODE::ID)myCard.mode);
     }
 
     if (downButton.pressedFor(LONG_PRESS * buttonDelayFactor)) {
@@ -327,7 +323,7 @@ void loop() {
       Log.notice(F("Previous button was pressed." CR));
       // mp3Player->playAdvertisement(SystemSound::BUTTON_SOUND);
       // mp3Player->playAdvertisement(1);
-      previousTrack();
+      previousTrack((NFC_CARD_MODE::ID)myCard.mode);
     }
     
     resetButtonDelayForLongPress();
