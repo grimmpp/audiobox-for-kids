@@ -47,17 +47,6 @@ uint8_t voiceMenu(uint16_t numberOfOptions, SystemSound::ID startMessage, uint8_
 bool resetCard(void);
 NfcTag setupCard(NfcTag oldCard);
 
-class Callback : public ICallback {
-public:
-  Callback(Controller *c) : controller(c) {}
-  void notify(uint8_t track) {
-    Log.notice(F("Start next track in callback." CR));
-    // controller->nextTrack(track, (NFC_CARD_MODE::ID)myCard.mode);
-  }
-private:
-  Controller *controller;
-};
-ICallback *callbackObj;
 Controller *controller;
 Mp3Player * mp3Player;
 
@@ -137,14 +126,12 @@ void setup() {
   Log.notice(F("Init Controller" CR));
   controller = new Controller();
 
-  Log.notice(F("Init Callback loop" CR));
-  callbackObj = new Callback(controller);
-
   // DFPlayer Mini initialisieren
   Log.trace(F("Init mp3 player." CR));
-  mp3Player = new Mp3Player(MP3_PLAYER_RX_PIN, MP3_PLAYER_TX_PIN, BUSY_PIN, callbackObj);
+  mp3Player = new Mp3Player(MP3_PLAYER_RX_PIN, MP3_PLAYER_TX_PIN, BUSY_PIN, controller);
   mp3Player->setVolume(INIT_VOLUME);
   mp3Player->setMaxVolumeLimit(MAX_VOLUME_LIMIT);
+  
   controller->initMp3Player(mp3Player);
   
   Log.notice(F("Start welcome sound." CR));

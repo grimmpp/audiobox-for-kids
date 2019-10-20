@@ -4,6 +4,7 @@
 #include <EEPROM.h>
 
 // local references
+#include "ICallback.h"
 #include "Mp3Player.h"
 #include "NfcData.h"
 
@@ -12,13 +13,12 @@ public:
     Controller() {}
     void initMp3Player(Mp3Player *player) { mp3Player = player; }
 
-
     void notify(uint8_t track) {
-        Log.notice(F("Start next track in callback." CR));
-        nextTrack(track);
+        // Log.notice(F("Start next track in callback." CR));
+        nextTrack(track, true);
     }
 
-    void nextTrack(uint16_t track) {
+    void nextTrack(uint16_t track, bool continuousMode = false) {
         Log.notice(F("Start next track: Finished track: %d (Mp3PlayerTrack: %d, currentTrack: %d, Is system Sound: %b), playMode: %d" CR), 
             track, mp3Player->getCurrentMp3PlayerTrackId(), mp3Player->getCurrentTrack(), mp3Player->isCurrentTrackSystemSound(), mode);
         
@@ -29,7 +29,7 @@ public:
 
         // This is needed because otherwise it would call this function at least two times. 
         // (loop in mp3Player lib doesn't clean up the state fast enough)
-        if (mp3Player->isNextTrackHanded()) {
+        if (!continuousMode && mp3Player->isNextTrackHanded()) {
             Log.notice(F("Exit next track because it was already handled."));
             return;
         }
