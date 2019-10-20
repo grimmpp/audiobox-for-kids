@@ -127,11 +127,13 @@ void setup() {
   controller = new Controller();
 
   // DFPlayer Mini initialisieren
-  Log.trace(F("Init mp3 player." CR));
+  Log.notice(F("Init mp3 player." CR));
   mp3Player = new Mp3Player(MP3_PLAYER_RX_PIN, MP3_PLAYER_TX_PIN, BUSY_PIN, controller);
+  Log.notice(F("Disable function sleep for mp3Player." CR));
+  mp3Player->enableSleep(false);
   mp3Player->setVolume(INIT_VOLUME);
   mp3Player->setMaxVolumeLimit(MAX_VOLUME_LIMIT);
-  
+
   controller->initMp3Player(mp3Player);
   
   Log.notice(F("Start welcome sound." CR));

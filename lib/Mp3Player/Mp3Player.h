@@ -52,10 +52,6 @@ class Mp3Player {
             return _volume;
         }
 
-        void sleep() {
-            dfMiniMp3->sleep();
-        }
-
         void loop() {
             dfMiniMp3->loop();
         }
@@ -180,6 +176,22 @@ class Mp3Player {
             nextTrackHandled = true;
         }
 
+        void sleep() {
+            if (sleepEnabled) {
+                dfMiniMp3->sleep();
+            } else {
+                Log.notice(F("Mp3Player: Sleep function was called and ignored because it's inactive." CR));
+            }
+        }
+
+        bool isSleepEnabled() {
+            return sleepEnabled;
+        }
+
+        void enableSleep(bool enabled) {
+            sleepEnabled = enabled;
+        }
+
     private:
         uint16_t currentFolder = 0;
         uint16_t currentTrack = 0;
@@ -187,6 +199,7 @@ class Mp3Player {
         uint16_t currentMp3PlayerTrackId = 0;
         bool currentTrackIsSystemSound = false;
         bool nextTrackHandled = false;
+        bool sleepEnabled = true;
 
         uint8_t _volume = 15;
         uint8_t _maxVolumeLimit = 30;
