@@ -19,9 +19,6 @@ public:
     }
 
     void nextTrack(uint16_t track, bool continuousMode = false) {
-        Log.notice(F("Start next track: Finished track: %d (Mp3PlayerTrack: %d, currentTrack: %d, Is system Sound: %b), playMode: %d" CR), 
-            track, mp3Player->getCurrentMp3PlayerTrackId(), mp3Player->getCurrentTrack(), mp3Player->isCurrentTrackSystemSound(), mode);
-        
         if (mp3Player->isCurrentTrackSystemSound()) {
             Log.notice(F("Last track was a system sound." CR));
             return;
@@ -29,11 +26,14 @@ public:
 
         // This is needed because otherwise it would call this function at least two times. 
         // (loop in mp3Player lib doesn't clean up the state fast enough)
-        if (!continuousMode && mp3Player->isNextTrackHanded()) {
+        if (continuousMode && mp3Player->isNextTrackHanded()) {
             Log.notice(F("Exit next track because it was already handled."));
             return;
         }
         mp3Player->nextTrackHandlingStarted();
+
+        Log.notice(F("Choose Next Track: finished track: %d (Mp3PlayerTrack: %d, currentTrack: %d, Is system Sound: %b), playMode: %d" CR), 
+            track, mp3Player->getCurrentMp3PlayerTrackId(), mp3Player->getCurrentTrack(), mp3Player->isCurrentTrackSystemSound(), mode);
 
         switch(mode) {
             case NFC_CARD_MODE::UNASSIGNED:
