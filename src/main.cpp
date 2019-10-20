@@ -52,7 +52,7 @@ public:
   Callback(Controller *c) : controller(c) {}
   void notify(uint8_t track) {
     Log.notice(F("Start next track in callback." CR));
-    controller->nextTrack(track, (NFC_CARD_MODE::ID)myCard.mode);
+    // controller->nextTrack(track, (NFC_CARD_MODE::ID)myCard.mode);
   }
 private:
   Controller *controller;
@@ -198,7 +198,7 @@ void loop() {
     } else if (upButton.wasReleased()) {
       Log.notice(F("Next button was pressed." CR));
       // mp3Player->playAdvertisement(SystemSound::BUTTON_SOUND);
-      controller->nextTrack(random(65536), (NFC_CARD_MODE::ID)myCard.mode);
+      controller->nextTrack(random(65536));
     }
 
     if (downButton.pressedFor(LONG_PRESS * buttonDelayFactor)) {
@@ -210,7 +210,7 @@ void loop() {
       Log.notice(F("Previous button was pressed." CR));
       // mp3Player->playAdvertisement(SystemSound::BUTTON_SOUND);
       // mp3Player->playAdvertisement(1);
-      controller->previousTrack((NFC_CARD_MODE::ID)myCard.mode);
+      controller->previousTrack();
     }
     
     resetButtonDelayForLongPress();

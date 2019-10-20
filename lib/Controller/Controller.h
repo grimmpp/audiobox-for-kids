@@ -7,14 +7,20 @@
 #include "Mp3Player.h"
 #include "NfcData.h"
 
-class Controller{ //TODO: callback interface
+class Controller : public ICallback {
 public:
     Controller() {}
     void initMp3Player(Mp3Player *player) { mp3Player = player; }
 
-    void nextTrack(uint16_t track, NFC_CARD_MODE::ID playMode, bool forceTo) {
+
+    void notify(uint8_t track) {
+        Log.notice(F("Start next track in callback." CR));
+        nextTrack(track);
+    }
+
+    void nextTrack(uint16_t track) {
         Log.notice(F("Start next track: Finished track: %d (Mp3PlayerTrack: %d, currentTrack: %d, Is system Sound: %b), playMode: %d" CR), 
-            track, mp3Player->getCurrentMp3PlayerTrackId(), mp3Player->getCurrentTrack(), mp3Player->isCurrentTrackSystemSound(), playMode);
+            track, mp3Player->getCurrentMp3PlayerTrackId(), mp3Player->getCurrentTrack(), mp3Player->isCurrentTrackSystemSound(), mode);
         
         if (mp3Player->isCurrentTrackSystemSound()) {
             Log.notice(F("Last track was a system sound." CR));
@@ -29,7 +35,7 @@ public:
         }
         mp3Player->nextTrackHandlingStarted();
 
-        switch(playMode) {
+        switch(mode) {
             case NFC_CARD_MODE::UNASSIGNED:
             Log.notice(F("No play mode assigned." CR));
             break;
@@ -69,10 +75,10 @@ public:
         }
     }
 
-    void previousTrack(NFC_CARD_MODE::ID playMode) {
+    void previousTrack() {
         Log.notice(F("Play previous track." CR));
 
-        switch(playMode) {
+        switch(mode) {
             case NFC_CARD_MODE::UNASSIGNED:
             Log.notice(F("No play mode assigned." CR));
             mp3Player->sleep();
@@ -115,7 +121,8 @@ public:
     void playTrack(NfcTag nfcCard) {
         uint16_t nextTrack = 0;
 
-        switch(nfcCard.mode) {
+        mode = (NFC_CARD_MODE::ID)nfcCard.mode;
+        switch(mode) {
             case NFC_CARD_MODE::UNASSIGNED:
             Log.error(F("No play mode assigned." CR));
             break;
@@ -161,6 +168,8 @@ private:
     Mp3Player *mp3Player;
     uint16_t lastTrack = 0;
     bool handled = false;
+
+    NFC_CARD_MODE::ID mode = NFC_CARD_MODE::UNASSIGNED;
 };
 
 #endif
