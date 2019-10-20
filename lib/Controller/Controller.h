@@ -7,16 +7,27 @@
 #include "Mp3Player.h"
 #include "NfcData.h"
 
-class Controller{
+class Controller{ //TODO: callback interface
 public:
-    Controller(Mp3Player *player) : mp3Player(player) { }
+    Controller() {}
+    void initMp3Player(Mp3Player *player) { mp3Player = player; }
 
-    void nextTrack(uint16_t track, NFC_CARD_MODE::ID playMode) {
-
+    void nextTrack(uint16_t track, NFC_CARD_MODE::ID playMode, bool forceTo) {
+        Log.notice(F("Start next track: Finished track: %d (Mp3PlayerTrack: %d, currentTrack: %d, Is system Sound: %b), playMode: %d" CR), 
+            track, mp3Player->getCurrentMp3PlayerTrackId(), mp3Player->getCurrentTrack(), mp3Player->isCurrentTrackSystemSound(), playMode);
+        
         if (mp3Player->isCurrentTrackSystemSound()) {
             Log.notice(F("Last track was a system sound." CR));
             return;
         }
+
+        // This is needed because otherwise it would call this function at least two times. 
+        // (loop in mp3Player lib doesn't clean up the state fast enough)
+        if (mp3Player->isNextTrackHanded()) {
+            Log.notice(F("Exit next track because it was already handled."));
+            return;
+        }
+        mp3Player->nextTrackHandlingStarted();
 
         switch(playMode) {
             case NFC_CARD_MODE::UNASSIGNED:
@@ -148,6 +159,8 @@ public:
 
 private:
     Mp3Player *mp3Player;
+    uint16_t lastTrack = 0;
+    bool handled = false;
 };
 
 #endif

@@ -58,8 +58,6 @@ class Mp3Player {
 
         void loop() {
             dfMiniMp3->loop();
-
-            // if (!this->isPlaying()) resetTrackValues();
         }
 
         void waitUntilTrackIsFinished() {
@@ -82,18 +80,17 @@ class Mp3Player {
 
             if (trackCountInFolder > 0 && trackCountInFolder >= track) {
                 currentTrackIsSystemSound = false;
+                nextTrackHandled = false;
                 dfMiniMp3->playFolderTrack(currentFolder, currentTrack);
-                delay(250);
+                
+                do { delay(100); } while(!isPlaying());
                 currentMp3PlayerTrackId = dfMiniMp3->getCurrentTrack();
+
                 Log.notice(F("Play track %d (dfPlayerTrackId: %d) of %d track(s) in folder %d." CR), 
                     currentTrack, currentMp3PlayerTrackId, trackCountInFolder, currentFolder);
                 return true;
 
-            } 
-            // else {                
-            //     resetTrackValues();
-            //     return false;
-            // }
+            }
 
             return false;
         }
@@ -109,11 +106,12 @@ class Mp3Player {
         }
 
         void playSystemSounds(SystemSound::ID systemSoundId) {
-            // resetTrackValues();
 
             currentTrackIsSystemSound = true;
+            nextTrackHandled = false;
             dfMiniMp3->playMp3FolderTrack(systemSoundId);
-            delay(250);
+
+            do { delay(100); } while(!isPlaying());
             currentMp3PlayerTrackId = dfMiniMp3->getCurrentTrack();
 
             Log.notice(F("Play system sound: %s (Id: %d, dfPlayerTrackId: %d)" CR), 
@@ -122,6 +120,10 @@ class Mp3Player {
 
         uint16_t getCurrentTrack() {
             return currentTrack;
+        }
+
+        uint16_t getCurrentMp3PlayerTrackId() {
+            return currentMp3PlayerTrackId;
         }
 
         uint16_t getCurrentFolder() {
@@ -134,7 +136,7 @@ class Mp3Player {
                 playFolderTrack(currentFolder, currentTrack);
                 return true;
             } else {
-                dfMiniMp3->sleep();
+                sleep();
                 return false;
             }
         }
@@ -170,12 +172,21 @@ class Mp3Player {
             return currentTrackIsSystemSound;
         }
 
+        bool isNextTrackHanded() {
+            return nextTrackHandled;
+        }
+
+        void nextTrackHandlingStarted() {
+            nextTrackHandled = true;
+        }
+
     private:
         uint16_t currentFolder = 0;
         uint16_t currentTrack = 0;
         uint16_t trackCountInFolder = 0;
         uint16_t currentMp3PlayerTrackId = 0;
         bool currentTrackIsSystemSound = false;
+        bool nextTrackHandled = false;
 
         uint8_t _volume = 15;
         uint8_t _maxVolumeLimit = 30;
