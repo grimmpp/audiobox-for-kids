@@ -91,6 +91,12 @@ void resetEEPROMOption() {
   }
 }
 
+void readButtons() {
+  pauseButton.read();
+  upButton.read();
+  downButton.read();
+}
+
 void setup() {
 
   Serial.begin(SERIAL_BAUD); 
@@ -145,9 +151,7 @@ void loop() {
   do {
     mp3Player->loop();
 
-    pauseButton.read();
-    upButton.read();
-    downButton.read();
+    readButtons();
 
     restartOption();
 
@@ -244,9 +248,7 @@ uint8_t voiceMenu(uint16_t numberOfOptions, SystemSound::ID startMessage, System
   if (startMessage != SystemSound::UNKNOWN) mp3Player->playSystemSounds(startMessage);
 
   do {
-    pauseButton.read();
-    upButton.read();
-    downButton.read();
+    readButtons();
     mp3Player->loop();
 
     restartOption();
@@ -287,9 +289,7 @@ bool resetCard() {
   mp3Player->playSystemSounds(SystemSound::RESET_TAG);
 
   do {
-    pauseButton.read();
-    upButton.read();
-    downButton.read();
+    readButtons();
 
     if (upButton.wasReleased() || downButton.wasReleased()) {
       Log.notice(F("Reset Card was cancelled." CR));
