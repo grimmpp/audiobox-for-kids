@@ -4,13 +4,12 @@
 #include <ArduinoLog.h>
 // https://github.com/thijse/Arduino-Log/blob/master/examples/Log/Log.ino
 
-#include <JC_Button.h>
-
 // local references
 #include "NfcData.h"
 #include "SystemSound.h"
 #include "RfidReader.h"
 #include "Mp3Player.h"
+#include "ButtonManager.h"
 #include "Controller.h"
 
 // serial interface for log messages
@@ -23,7 +22,7 @@
 #define MP3_PLAYER_TX_PIN 3
 
 // Button Pins
-#define BUTTON_PAUSE_PIN A0
+#define BUTTON_PLAY_PIN A0
 #define BUTTON_UP_PIN A1
 #define BUTTON_DOWN_PIN A2
 
@@ -46,55 +45,20 @@ NfcTag setupCard(NfcTag oldCard);
 
 Controller *controller;
 Mp3Player * mp3Player;
+RfidReader *rfidReader;
+ButtonManager *buttonManager;
 
-RfidReader *rfidReader; // = RfidReader(SS_PIN, RST_PIN);
-
-// Buttons
-Button pauseButton(BUTTON_PAUSE_PIN);
-Button upButton(BUTTON_UP_PIN);
-Button downButton(BUTTON_DOWN_PIN);
-// if button is press it will increasing or decreasing the volume in steps by a delay of LONG_PRESS
-uint8_t buttonDelayFactor = 1;
-
-uint8_t numberOfCards = 0;
-
-void waitForButtonToBeReleased(Button b) {
-  do { b.read(); }
-  while (!b.wasReleased());
-}
-
-/**
- * Reset button delay for long push
- */
-void resetButtonDelayForLongPress() {
-    if (!downButton.isPressed() && !upButton.isPressed() && !pauseButton.isPressed()){
-      buttonDelayFactor = 1;
-    }
-}
-
-void restartOption() {
-  if (upButton.pressedFor(LONG_PRESS) && downButton.pressedFor(LONG_PRESS)) {
-    Log.notice(F("Restart Arduino!"));
-    asm volatile ("  jmp 0"); 
-  }
-}
 
 /**
  * Press all buttons for 1sec at start time to delete complete EEPROM
  */
 void resetEEPROMOption() {
-  if (digitalRead(BUTTON_PAUSE_PIN) == LOW && digitalRead(BUTTON_UP_PIN) == LOW && digitalRead(BUTTON_DOWN_PIN) == LOW) {
+  if (digitalRead(BUTTON_PLAY_PIN) == LOW && digitalRead(BUTTON_UP_PIN) == LOW && digitalRead(BUTTON_DOWN_PIN) == LOW) {
     Log.notice(F("Reset -> clean EEPROM"));
     for (uint16_t i = 0; i < EEPROM.length(); i++) {
       EEPROM.write(i, 0);
     }
   }
-}
-
-void readButtons() {
-  pauseButton.read();
-  upButton.read();
-  downButton.read();
 }
 
 void setup() {
@@ -115,9 +79,7 @@ void setup() {
 
   // Button with PullUp
   Log.trace(F("Init pullup buttons." CR));
-  pinMode(BUTTON_PAUSE_PIN, INPUT_PULLUP);
-  pinMode(BUTTON_UP_PIN, INPUT_PULLUP);
-  pinMode(BUTTON_DOWN_PIN, INPUT_PULLUP);
+  buttonManager = new ButtonManager(LONG_PRESS, BUTTON_DOWN_PIN, BUTTON_PLAY_PIN, BUTTON_UP_PIN);
 
   // NFC Reader
   Log.trace(F("Init NFC reader: "));
@@ -151,12 +113,12 @@ void loop() {
   do {
     mp3Player->loop();
 
-    readButtons();
+    buttonManager->readAllButtons();
 
-    restartOption();
+    buttonManager->restartOption();
 
-    if (pauseButton.pressedFor(LONG_PRESS)) {
-      waitForButtonToBeReleased(pauseButton);
+    if (buttonManager->isPlayButtonPressedForLong()) {
+      buttonManager->waitForPlayButtonToBeReleased();
 
       if (mp3Player->isPlaying()) {
         Log.notice(F("Advertise current track." CR));
@@ -167,12 +129,12 @@ void loop() {
         rfidReader->halt();
       }
     }
-    else if (pauseButton.wasReleased()) {
+    else if (buttonManager->wasPlayButtonReleased()) {
       if (mp3Player->isPlaying()) {
         Log.notice(F("Pause current track." CR));
         mp3Player->pause();
         // mp3Player->playAdvertisement(SystemSound::BUTTON_SOUND);
-      } 
+      }
       else {
         Log.notice(F("Continue current track." CR));
         // mp3Player->playAdvertisement(SystemSound::BUTTON_SOUND);
@@ -180,30 +142,28 @@ void loop() {
       }
     }
 
-    if (upButton.pressedFor(LONG_PRESS * buttonDelayFactor)) {
-      Log.notice(F("Volume Up %d" CR), buttonDelayFactor);
+    if (buttonManager->isUpButtonPressedForLong()) {
+      Log.notice(F("Volume Up" CR));
       mp3Player->increaseVolume();
-      buttonDelayFactor++;
       // mp3Player->playAdvertisement(SystemSound::BUTTON_SOUND);
-    } else if (upButton.wasReleased()) {
+    } else if (buttonManager->wasUpButtonReleased()) {
       Log.notice(F("Next button was pressed." CR));
       // mp3Player->playAdvertisement(SystemSound::BUTTON_SOUND);
       controller->nextTrack(random(65536));
     }
 
-    if (downButton.pressedFor(LONG_PRESS * buttonDelayFactor)) {
-      Log.notice(F("Volume Down %d" CR), buttonDelayFactor);
+    if (buttonManager->isDownButtonPressedForLong()) {
+      Log.notice(F("Volume Down" CR));
       mp3Player->decreaseVolume();
-      buttonDelayFactor++;
       // mp3Player->playAdvertisement(SystemSound::BUTTON_SOUND);
-    } else if (downButton.wasReleased()) {
+    } else if (buttonManager->wasDownButtonReleased()) {
       Log.notice(F("Previous button was pressed." CR));
       // mp3Player->playAdvertisement(SystemSound::BUTTON_SOUND);
       // mp3Player->playAdvertisement(1);
       controller->previousTrack();
     }
     
-    resetButtonDelayForLongPress();
+    buttonManager->resetButtonDelayForLongPress();
 
   } while (!rfidReader->isNewCardPresent());
 
@@ -248,38 +208,35 @@ uint8_t voiceMenu(uint16_t numberOfOptions, SystemSound::ID startMessage, System
   if (startMessage != SystemSound::UNKNOWN) mp3Player->playSystemSounds(startMessage);
 
   do {
-    readButtons();
     mp3Player->loop();
+    buttonManager->readAllButtons();
+    buttonManager->restartOption();
 
-    restartOption();
-
-    if (upButton.pressedFor(LONG_PRESS*buttonDelayFactor)) {
+    if (buttonManager->isUpButtonPressedForLong()) {
       Log.notice(F("UpButton pressed for long." CR));
-      buttonDelayFactor++;
       returnValue = min(returnValue + 10, numberOfOptions);
       playPreview(messageOffset, preview, previewFromFolder, returnValue);
 
-    } else if (upButton.wasReleased()) {
+    } else if (buttonManager->wasUpButtonReleased()) {
       Log.notice(F("UpButton was released." CR));
       returnValue = min(returnValue + 1, numberOfOptions);
       playPreview(messageOffset, preview, previewFromFolder, returnValue);
     }
     
-    if (downButton.pressedFor(LONG_PRESS*buttonDelayFactor)) {
+    if (buttonManager->isDownButtonPressedForLong()) {
       Log.notice(F("DownButton pressed for long." CR));
-      buttonDelayFactor++;
       returnValue = max(returnValue - 10, 1);
       playPreview(messageOffset, preview, previewFromFolder, returnValue);
 
-    } else if (downButton.wasReleased()) {
+    } else if (buttonManager->wasDownButtonReleased()) {
       Log.notice(F("DownButton was released." CR));
       returnValue = max(returnValue - 1, 1);
       playPreview(messageOffset, preview, previewFromFolder, returnValue);
     }
 
-    resetButtonDelayForLongPress();
+    buttonManager->resetButtonDelayForLongPress();
 
-  } while ( !(returnValue != 0 && pauseButton.wasPressed()) );
+  } while ( !(returnValue != 0 && buttonManager->wasPlayButtonReleased()) );
 
   return returnValue;
 }
@@ -289,9 +246,10 @@ bool resetCard() {
   mp3Player->playSystemSounds(SystemSound::RESET_TAG);
 
   do {
-    readButtons();
+    buttonManager->readAllButtons();
+    buttonManager->restartOption();
 
-    if (upButton.wasReleased() || downButton.wasReleased()) {
+    if (buttonManager->wasUpButtonReleased() || buttonManager->wasDownButtonReleased()) {
       Log.notice(F("Reset Card was cancelled." CR));
       mp3Player->playSystemSounds(SystemSound::RESET_ABORTED);
       return false;
@@ -363,4 +321,5 @@ NfcTag setupCard(NfcTag oldCard) {
     mp3Player->playSystemSounds(SystemSound::ERROR);
     return oldCard;
   }
+
 }
