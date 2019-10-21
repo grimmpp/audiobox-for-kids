@@ -36,30 +36,18 @@
 #define INIT_VOLUME 10
 #define MAX_VOLUME_LIMIT 20
 
-NfcTag myCard;
-
 uint8_t voiceMenu(uint16_t numberOfOptions, SystemSound::ID startMessage, uint8_t messageOffset,
               bool preview = false, uint8_t previewFromFolder = 0);
 bool resetCard(void);
 NfcTag setupCard(NfcTag oldCard);
+void resetEEPROMOption(void);
 
+NfcTag nfcCard;
 Controller *controller;
 Mp3Player * mp3Player;
 RfidReader *rfidReader;
 ButtonManager *buttonManager;
 
-
-/**
- * Press all buttons for 1sec at start time to delete complete EEPROM
- */
-void resetEEPROMOption() {
-  if (digitalRead(BUTTON_PLAY_PIN) == LOW && digitalRead(BUTTON_UP_PIN) == LOW && digitalRead(BUTTON_DOWN_PIN) == LOW) {
-    Log.notice(F("Reset -> clean EEPROM"));
-    for (uint16_t i = 0; i < EEPROM.length(); i++) {
-      EEPROM.write(i, 0);
-    }
-  }
-}
 
 void setup() {
 
@@ -108,6 +96,7 @@ void setup() {
   Log.trace(F("Initialization completed." CR CR));
 }
 
+
 void loop() {
   Log.notice(F("In loop." CR));
   do {
@@ -125,7 +114,7 @@ void loop() {
         mp3Player->playAdvertisement(mp3Player->getCurrentTrack());
       } else {
         // mp3Player->playAdvertisement(SystemSound::BUTTON_SOUND);
-        if (resetCard()) myCard = setupCard(myCard);
+        if (resetCard()) nfcCard = setupCard(nfcCard);
         rfidReader->halt();
       }
     }
@@ -174,18 +163,30 @@ void loop() {
     return;
   }
 
-  if (rfidReader->readCard(&myCard)) {
+  if (rfidReader->readCard(&nfcCard)) {
       
-    if (myCard.cookie == 322417479 && myCard.folder != 0 && myCard.mode != 0) {
+    if (nfcCard.cookie == 322417479 && nfcCard.folder != 0 && nfcCard.mode != 0) {
 
-        controller->playTrack(myCard);
+        controller->playTrack(nfcCard);
     }
     else {
       // Configure new nfc card
-      setupCard(myCard);
+      setupCard(nfcCard);
     }
 
     rfidReader->halt();
+  }
+}
+
+/**
+ * Press all buttons for 1sec at start time to delete complete EEPROM
+ */
+void resetEEPROMOption() {
+  if (digitalRead(BUTTON_PLAY_PIN) == LOW && digitalRead(BUTTON_UP_PIN) == LOW && digitalRead(BUTTON_DOWN_PIN) == LOW) {
+    Log.notice(F("Reset -> clean EEPROM"));
+    for (uint16_t i = 0; i < EEPROM.length(); i++) {
+      EEPROM.write(i, 0);
+    }
   }
 }
 
