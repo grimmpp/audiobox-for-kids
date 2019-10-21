@@ -33,12 +33,9 @@
 #define RST_PIN 9
 #define SS_PIN 10
 
-// DFPlayer Mini
-uint16_t trackCountInFolder = 0;
-uint16_t currentTrack = 0;
-uint16_t currentMp3PlayerTrack = 0;
-static const uint8_t INIT_VOLUME = 10;
-static const uint8_t MAX_VOLUME_LIMIT = 20;
+// Mp3Player
+#define INIT_VOLUME 10
+#define MAX_VOLUME_LIMIT 20
 
 NfcTag myCard;
 
@@ -52,7 +49,7 @@ Mp3Player * mp3Player;
 
 RfidReader *rfidReader; // = RfidReader(SS_PIN, RST_PIN);
 
-// Buttonss
+// Buttons
 Button pauseButton(BUTTON_PAUSE_PIN);
 Button upButton(BUTTON_UP_PIN);
 Button downButton(BUTTON_DOWN_PIN);
@@ -159,7 +156,7 @@ void loop() {
 
       if (mp3Player->isPlaying()) {
         Log.notice(F("Advertise current track." CR));
-        mp3Player->playAdvertisement(currentTrack);
+        mp3Player->playAdvertisement(mp3Player->getCurrentTrack());
       } else {
         // mp3Player->playAdvertisement(SystemSound::BUTTON_SOUND);
         if (resetCard()) myCard = setupCard(myCard);
