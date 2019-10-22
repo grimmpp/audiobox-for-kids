@@ -11,6 +11,7 @@
 #include "Mp3Player.h"
 #include "ButtonManager.h"
 #include "Controller.h"
+#include "PowerBankKeepAliveManager.h"
 
 // serial interface for log messages
 #define SERIAL_BAUD 115200
@@ -35,6 +36,8 @@
 // Mp3Player
 #define INIT_VOLUME 10
 #define MAX_VOLUME_LIMIT 20
+
+
 
 uint8_t voiceMenu(uint16_t numberOfOptions, SystemSound::ID startMessage, uint8_t messageOffset,
               bool preview = false, uint8_t previewFromFolder = 0);
