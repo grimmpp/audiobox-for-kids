@@ -6,6 +6,11 @@
 #include <ArduinoLog.h>
 // https://github.com/thijse/Arduino-Log/blob/master/examples/Log/Log.ino
 
+/**
+ * After a DURATION in ms the manager sends a signal for DELAY ms to a transistor 
+ * which causes an additional 200mA load for the power bank. This additional load
+ * is recognized by the power bank and resets its internal time to live counter. 
+ */
 class PowerBankKeepAliveManager {
 public:
 
@@ -21,12 +26,14 @@ public:
     void loop() {
         endOfDuration = millis();
 
-        if (endOfDuration - startOfDuration < DURATION_MS) {
-            Log.notice(F("Start triggering Power Bank."));
+        if (endOfDuration - startOfDuration > DURATION_MS) {
+            Log.notice(F("Start triggering Power Bank." CR));
             digitalWrite(PIN, HIGH);
             delay(DELAY_MS);
             digitalWrite(PIN, LOW);
-            Log.notice(F("Stop triggering Power Bank."));
+            Log.notice(F("Stop triggering Power Bank." CR));
+
+            startOfDuration = millis();
         }
     }
 
