@@ -37,7 +37,10 @@
 #define INIT_VOLUME 10
 #define MAX_VOLUME_LIMIT 20
 
-
+//Power Bank Keep Alive
+#define PB_KEEP_ALIVE_PIN 8
+#define PB_KEEP_ALIVE_INTERVAL_MS 5000
+#define PB_KEEP_ALIVE_PULS_LENGTH_MS 250
 
 uint8_t voiceMenu(uint16_t numberOfOptions, SystemSound::ID startMessage, uint8_t messageOffset,
               bool preview = false, uint8_t previewFromFolder = 0);
@@ -50,6 +53,7 @@ Controller *controller;
 Mp3Player * mp3Player;
 RfidReader *rfidReader;
 ButtonManager *buttonManager;
+PowerBankKeepAliveManager *pbkaMgr;
 
 
 void setup() {
@@ -78,6 +82,9 @@ void setup() {
   rfidReader->init(true);
 
   resetEEPROMOption();
+
+  Log.notice(F("Init PowerBankKeepAliveManager" CR));
+  pbkaMgr = new PowerBankKeepAliveManager(PB_KEEP_ALIVE_PIN, PB_KEEP_ALIVE_INTERVAL_MS, PB_KEEP_ALIVE_PULS_LENGTH_MS);
   
   Log.notice(F("Init Controller" CR));
   controller = new Controller();
@@ -103,8 +110,8 @@ void setup() {
 void loop() {
   Log.notice(F("In loop." CR));
   do {
+    pbkaMgr->loop();
     mp3Player->loop();
-
     buttonManager->readAllButtons();
 
     buttonManager->restartOption();
@@ -195,6 +202,7 @@ void resetEEPROMOption() {
 
 void playPreview(SystemSound::ID messageOffset, bool preview, uint8_t previewFromFolder, uint8_t returnValue){
   mp3Player->playSystemSounds((SystemSound::ID) (messageOffset + returnValue));
+  pbkaMgr->loop();
   delay(1000);
   if (preview) {
     do {
@@ -212,6 +220,7 @@ uint8_t voiceMenu(uint16_t numberOfOptions, SystemSound::ID startMessage, System
   if (startMessage != SystemSound::UNKNOWN) mp3Player->playSystemSounds(startMessage);
 
   do {
+    pbkaMgr->loop();
     mp3Player->loop();
     buttonManager->readAllButtons();
     buttonManager->restartOption();
@@ -250,6 +259,7 @@ bool resetCard() {
   mp3Player->playSystemSounds(SystemSound::RESET_TAG);
 
   do {
+    pbkaMgr->loop();
     buttonManager->readAllButtons();
     buttonManager->restartOption();
 
