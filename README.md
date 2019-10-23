@@ -4,6 +4,7 @@ This project is about an audiobox which allows small kids, who cannot read, don'
 <table border=0><tr>
   <td><img src="/pics/AudioboxForKids.png" width=300/></td>
   <td><img src="/pics/Board_Description_small.jpg" width=300/></td>
+  <td><img src="/pics/20190930_191049_small.jpg" width=300/></td>
 </tr></table>
 
 # What can it do?
