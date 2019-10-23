@@ -25,6 +25,7 @@ Before a tag can be used you need to tell the audiobox what should be played. Af
   Button next song and previous song is disabled in this mode.  <br />
   Button play/pause pauses, continuous, or restarts the track after it was finished.
 * **Audio Book with Bookmark**
+  After placing a tag on top of the box it starts playing an episode. After finishing an episode it stores the number of the next episode on the EEPROM (Arduino's internal persistent memory) so that it can proceed from there next time when the same tag is placed. If not interrupted by the pause button or another tag it will continue playing the next episode. 
 
 # Hardware
 * **[Part List](/part-list.md)** <br />
