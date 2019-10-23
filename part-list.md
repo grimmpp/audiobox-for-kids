@@ -6,8 +6,8 @@
 * **RFID Reader RC522** (See Starter Kit for TonUINO)
 * Electrolytic **capacitor 100µF** for voltage stabilization
 * Film **capacitor 100nF** for voltage stabilization
-* **Resistors** 3x1K, 0,1K for UART communication btw Arduino and DfMiniPlayer and for power bank wake up logic
-* **Transistor** for power bank wake up logic
+* **Resistors** 2x1KΩ for UART communication btw Arduino and DfMiniPlayer and 1kΩ + 25Ω (or in my case 2x50Ω in parallel) for power bank keep alive logic
+* **Transistor** IRLZ34N for power bank keep alive logic. Transistor must handle current between 200mA and 500mA.
 * **Speaker** ([FR 10 HM - 4 Ohm](https://www.visaton.de/de/produkte/chassiszubehoer/breitband-systeme/fr-10-hm-4-ohm)) [Amazon Offer](https://www.amazon.de/Visaton-schwarz-Lautsprecher-22000-Hz-kabelgebunden/dp/B003A63NLE/ref=sr_1_3?__mk_de_DE=%C3%85M%C3%85%C5%BD%C3%95%C3%91&keywords=tonuino&qid=1571168322&sr=8-3)
 * **3 Buttons** (Next/VolUp, Play/Pause, Prev/VolDown) [Amazon Offer](https://www.amazon.de/gp/product/B076SK1HMM/ref=ppx_yo_dt_b_asin_title_o03_s00?ie=UTF8&psc=1)
 * **Power Switch**
