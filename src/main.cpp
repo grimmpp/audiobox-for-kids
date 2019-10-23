@@ -40,7 +40,7 @@
 //Power Bank Keep Alive
 #define PB_KEEP_ALIVE_PIN 8
 #define PB_KEEP_ALIVE_INTERVAL_MS 5000
-#define PB_KEEP_ALIVE_PULS_LENGTH_MS 250
+#define PB_KEEP_ALIVE_PULS_LENGTH_MS 150
 
 uint8_t voiceMenu(uint16_t numberOfOptions, SystemSound::ID startMessage, uint8_t messageOffset,
               bool preview = false, uint8_t previewFromFolder = 0);
