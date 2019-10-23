@@ -19,18 +19,18 @@ public:
     }
 
     void nextTrack(uint16_t track, bool continuousMode = false) {
+        // This is needed because otherwise it would call this function at least two times. 
+        // (loop in mp3Player lib doesn't clean up the state fast enough)
+        if (continuousMode && mp3Player->isNextTrackHanded()) {
+            Log.notice(F("Exit next track because it was already handled." CR));
+            return;
+        }
+        mp3Player->nextTrackHandlingStarted();
+        
         if (mp3Player->isCurrentTrackSystemSound()) {
             Log.notice(F("Last track was a system sound." CR));
             return;
         }
-
-        // This is needed because otherwise it would call this function at least two times. 
-        // (loop in mp3Player lib doesn't clean up the state fast enough)
-        if (continuousMode && mp3Player->isNextTrackHanded()) {
-            Log.notice(F("Exit next track because it was already handled."));
-            return;
-        }
-        mp3Player->nextTrackHandlingStarted();
 
         Log.notice(F("Choose Next Track: finished track: %d (Mp3PlayerTrack: %d, currentTrack: %d, Is system Sound: %b), playMode: %d" CR), 
             track, mp3Player->getCurrentMp3PlayerTrackId(), mp3Player->getCurrentTrack(), mp3Player->isCurrentTrackSystemSound(), mode);
