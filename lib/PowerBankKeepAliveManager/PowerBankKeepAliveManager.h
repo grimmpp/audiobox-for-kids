@@ -27,11 +27,11 @@ public:
         endOfDuration = millis();
 
         if (endOfDuration - startOfDuration > DURATION_MS) {
-            Log.notice(F("Start triggering Power Bank." CR));
+            Log.notice(F("Start triggering Power Bank after %dms." CR), endOfDuration-startOfDuration);
             digitalWrite(PIN, HIGH);
             delay(DELAY_MS);
             digitalWrite(PIN, LOW);
-            Log.notice(F("Stop triggering Power Bank." CR));
+            Log.notice(F("Stop triggering Power Bank. (Impuls duration: %dms)" CR), DELAY_MS);
 
             startOfDuration = millis();
         }
