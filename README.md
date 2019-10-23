@@ -1,7 +1,10 @@
 # AudioBox for Kids (Arduino and DFMiniPlay Project)
 This project is about an audiobox which allows small kids, who cannot read, don't understand signs, or don't know which button to push, an easy way to choose sound effects, audio books, or music tracks. This can be done by putting small items on the top of the audiobox. Those items are related to the e.g. audio book they want to play and can be e.g. a small figure or a labelled cards or tags. 
 <br />
-<img src="/pics/AudioboxForKids.png" width=300/>
+<table border=0><tr>
+  <td><img src="/pics/AudioboxForKids.png" width=300/></td>
+  <td><img src="/pics/Board_Description_small.jpg" width=300/></td>
+</tr></table>
 
 # What can it do?
 The audiobox plays a mp3 file which is storage on a TF card after a RFID/NFC tag was placed on top of the box. 
