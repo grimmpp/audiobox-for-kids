@@ -27,6 +27,15 @@ Before a tag can be used you need to tell the audiobox what should be played. Af
 * **Audio Book with Bookmark**
   After placing a tag on top of the box it starts playing an episode. After finishing an episode it stores the number of the next episode on the EEPROM (Arduino's internal persistent memory) so that it can proceed from there next time when the same tag is placed. If not interrupted by the pause button or another tag it will continue playing the next episode. 
 
+## Features
+* Plays tracks, albums, songs, audio books, ... by placing nfc tags on the box.
+* Bookmarks for audio books
+* Random track selection
+* Menu to configure and map the nfc tags
+* Timeout for menus (default 60s)
+* Keep alive logic for power banks
+
+
 # Hardware
 * **[Part List](/part-list.md)** <br />
 <img src="/electronics/Schematic.png" height=200 />
