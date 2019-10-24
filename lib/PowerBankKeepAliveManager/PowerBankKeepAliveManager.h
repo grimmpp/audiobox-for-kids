@@ -21,6 +21,9 @@ public:
     { 
         pinMode(PIN, OUTPUT);
         digitalWrite(PIN, LOW);
+
+        endOfDuration = millis();
+        startOfDuration = millis();
     }
 
     void loop() {
