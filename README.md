@@ -37,6 +37,9 @@ Before a tag can be used you need to tell the audiobox what should be played. Af
 * Build and upload code: `pio run -v -t upload`
 * Open serial monitor: `pio device monitor -b 115200`
 
+## Build with Docker:
+Todo: ...
+
 # Thanks to Thorsten Voß
 Thorsten Voß had the brilliant idea to build such a audiobox for little kids. He realized his idea also with almost the same parts. His tutorial and big community is really great and inspired me a lot.
 * [Website TonUINO](https://www.voss.earth/tonuino/)
