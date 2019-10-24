@@ -42,11 +42,16 @@
 #define PB_KEEP_ALIVE_INTERVAL_MS 4000
 #define PB_KEEP_ALIVE_PULS_LENGTH_MS 150
 
+// timeout for menu.
+// After timeout the program is going to go back into main loop
+#define MENU_TIMEOUT_MS 60000 //60 sec
+
 uint8_t voiceMenu(uint16_t numberOfOptions, SystemSound::ID startMessage, uint8_t messageOffset,
               bool preview = false, uint8_t previewFromFolder = 0);
 bool resetCard(void);
 NfcTag setupCard(NfcTag oldCard);
 void resetEEPROMOption(void);
+bool checkMenuTimeout(void);
 
 NfcTag nfcCard;
 Controller *controller;
@@ -54,6 +59,7 @@ Mp3Player * mp3Player;
 RfidReader *rfidReader;
 ButtonManager *buttonManager;
 PowerBankKeepAliveManager *pbkaMgr;
+unsigned long menuTimeStart = 0;
 
 
 void setup() {
@@ -200,6 +206,14 @@ void resetEEPROMOption() {
   }
 }
 
+bool checkMenuTimeout() {
+  if (millis() - menuTimeStart > MENU_TIMEOUT_MS) {
+    Log.notice(F("Exit menu because of timeout: %dms" CR), MENU_TIMEOUT_MS);
+    return true;
+  }
+  return false;
+}
+
 void playPreview(SystemSound::ID messageOffset, bool preview, uint8_t previewFromFolder, uint8_t returnValue){
   mp3Player->playSystemSounds((SystemSound::ID) (messageOffset + returnValue));
   pbkaMgr->loop();
@@ -219,11 +233,13 @@ uint8_t voiceMenu(uint16_t numberOfOptions, SystemSound::ID startMessage, System
   uint8_t returnValue = 0;
   if (startMessage != SystemSound::UNKNOWN) mp3Player->playSystemSounds(startMessage);
 
+  menuTimeStart = millis();
   do {
     pbkaMgr->loop();
     mp3Player->loop();
     buttonManager->readAllButtons();
     buttonManager->restartOption();
+    if (checkMenuTimeout()) return 0;
 
     if (buttonManager->isUpButtonPressedForLong()) {
       Log.notice(F("UpButton pressed for long." CR));
@@ -258,10 +274,12 @@ bool resetCard() {
   Log.notice(F("Reset Nfc Card: " CR));
   mp3Player->playSystemSounds(SystemSound::RESET_TAG);
 
+  menuTimeStart = millis();
   do {
     pbkaMgr->loop();
     buttonManager->readAllButtons();
     buttonManager->restartOption();
+    if (checkMenuTimeout()) return false;
 
     if (buttonManager->wasUpButtonReleased() || buttonManager->wasDownButtonReleased()) {
       Log.notice(F("Reset Card was cancelled." CR));
@@ -302,10 +320,12 @@ NfcTag setupCard(NfcTag oldCard) {
   // Ask for mapping folder
   Log.notice(F("Start menu to define folder." CR));
   ncfCard.folder = voiceMenu(99, SystemSound::NEW_TAG, (SystemSound::ID)0, true);
+  if (ncfCard.folder == 0) return oldCard;
 
   // Ask for play mode
   Log.notice(F("Start menu to define play mode." CR));
   ncfCard.mode = voiceMenu(6, SystemSound::TAG_LINKED, SystemSound::TAG_LINKED);
+  if (ncfCard.mode == 0) return oldCard;
 
   // Create bookmark 
   Log.notice(F("Create bookmark for new folder" CR));
