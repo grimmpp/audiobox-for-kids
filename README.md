@@ -47,7 +47,16 @@ Before a tag can be used you need to tell the audiobox what should be played. Af
 * Open serial monitor: `pio device monitor -b 115200`
 
 ## Build with Docker:
-Todo: ...
+```docker
+docker build -t audiobox .
+```
+This command builds a docker image based on ubuntu. It contains [platformio](https://platformio.org/), download this git repo and builds the code for the audiobox.
+
+The following command starts the docker container:
+```docker
+docker run -it audiobox
+```
+
 
 # Thanks to Thorsten Voß
 Thorsten Voß had the brilliant idea to build such a audiobox for little kids. He realized his idea also with almost the same parts. His tutorial and big community is really great and inspired me a lot.
