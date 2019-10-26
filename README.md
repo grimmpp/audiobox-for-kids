@@ -18,6 +18,7 @@ Before a tag can be used you need to tell the audiobox what should be played. Af
 
 ## Play Modes
 * **Audio Book**
+After placing a tag on top of the audiobox it starts playing a random track out of the defined folder. The folder number is stored on the tag and after finishing the track the audiobox stops playing other tracks.
 * **Album**
 * **Party**
 * **Single Track** <br />
