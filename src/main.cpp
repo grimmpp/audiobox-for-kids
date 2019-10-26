@@ -105,6 +105,7 @@ void setup() {
 
   controller->initMp3Player(mp3Player);
   
+  delay(500);
   Log.notice(F("Start welcome sound." CR));
   mp3Player->playSystemSounds(SystemSound::START_SOUND);
   mp3Player->waitUntilTrackIsFinished();
