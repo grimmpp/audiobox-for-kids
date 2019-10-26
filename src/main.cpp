@@ -131,7 +131,10 @@ void loop() {
         mp3Player->playAdvertisement(mp3Player->getCurrentTrack());
       } else {
         // mp3Player->playAdvertisement(SystemSound::BUTTON_SOUND);
-        if (resetCard()) nfcCard = setupCard(nfcCard);
+        if (resetCard()) {
+          nfcCard = setupCard(nfcCard);
+          controller->playTrack(nfcCard);
+        }
         rfidReader->halt();
       }
     }
@@ -188,7 +191,8 @@ void loop() {
     }
     else {
       // Configure new nfc card
-      setupCard(nfcCard);
+      nfcCard = setupCard(nfcCard);
+      controller->playTrack(nfcCard);
     }
 
     rfidReader->halt();
