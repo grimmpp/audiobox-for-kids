@@ -34,7 +34,7 @@
 #define SS_PIN 10
 
 // Mp3Player
-#define INIT_VOLUME 15
+#define INIT_VOLUME 10
 #define MAX_VOLUME_LIMIT 20
 
 //Power Bank Keep Alive
@@ -180,13 +180,13 @@ void loop() {
   Log.notice(F("New card has been detected. " CR));
 
   if (!rfidReader->readCardSerial()) {
+    Log.notice(F("Cannot read card!" CR));
     return;
   }
 
   if (rfidReader->readCard(&nfcCard)) {
       
     if (nfcCard.cookie == 322417479 && nfcCard.folder != 0 && nfcCard.mode != 0) {
-
         controller->playTrack(nfcCard);
     }
     else {
