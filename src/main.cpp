@@ -103,7 +103,7 @@ void setup() {
   mp3Player->setVolume(INIT_VOLUME);
   mp3Player->setMaxVolumeLimit(MAX_VOLUME_LIMIT);
 
-  controller->initMp3Player(mp3Player);
+  controller->setMp3Player(mp3Player);
   
   delay(500);
   Log.notice(F("Start welcome sound." CR));

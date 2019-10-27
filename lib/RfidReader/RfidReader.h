@@ -21,6 +21,7 @@ class RfidReader {
 
     void init(bool dumpVersion = false) {
       SPI.begin();
+      mfrc522.PCD_SetAntennaGain(mfrc522.RxGain_max);
       mfrc522.PCD_Init();
       if (dumpVersion) {
         mfrc522.PCD_DumpVersionToSerial();
