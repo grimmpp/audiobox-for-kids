@@ -54,8 +54,12 @@ public:
         waitForButtonToBeReleased(playButton);
     }
 
+    bool wasButtonReleased(Button b) {
+        return buttonDelayFactor == 1 &&  b.wasReleased();
+    }
+
     bool wasPlayButtonReleased() {
-        return playButton.wasReleased();
+        return wasButtonReleased(playButton);
     }
 
     bool isButtonPressedForLong(Button btn) {
@@ -69,7 +73,7 @@ public:
     }
 
     bool wasUpButtonReleased() {
-        return upButton.wasReleased();
+        return wasButtonReleased(upButton);
     }
 
     bool isDownButtonPressedForLong() {
@@ -77,7 +81,7 @@ public:
     }
 
     bool wasDownButtonReleased() {
-        return downButton.wasReleased();
+        return wasButtonReleased(downButton);
     }
 
 private:
