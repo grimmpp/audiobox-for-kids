@@ -41,6 +41,14 @@ After placing a tag on top of the audiobox it starts playing a random track out 
 * **[Part List](/part-list.md)** <br />
 <img src="/electronics/Schematic.png" height=200 />
 
+## NFC Tags
+In the **[Part List](/part-list.md)** you can find the used nfc tags. I've created as well small figures from an old wooden puzzle and disassembled nfc tags which I just fixed with ordenary tape. 
+<table border=0><tr>
+  <td><img src="/pics/PHOTO_20191026_105735_small.jpg" width=300/></td>
+  <td><img src="/pics/PHOTO_20191026_172736_small.jpg" width=300/></td>
+  <td><img src="/pics/PHOTO_20191026_172803_small.jpg" width=300/></td>
+</tr></table>
+
 # Arduino Software
 ## PlatformIO commands:
 * Build code: `pio run`
