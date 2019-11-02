@@ -31,6 +31,12 @@ class RfidReader {
       }
     }
 
+    void reset() {
+      Log.notice(F("Reset RFID Card Read." CR));
+      // mfrc522.PCD_Reset(); // soft reset
+      init(false); // hard reset included!
+    }
+
     /**
      * 
      */

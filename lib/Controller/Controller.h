@@ -151,7 +151,7 @@ public:
                 Log.notice(F("Audio Book Mode with bookmarks is active. All tracks in the folder %d will be played one after the other and all completed tracks will be bookmarked." CR));
                 nextTrack = EEPROM.read(nfcCard.folder);
                 if (mp3Player->isPlaying() && mp3Player->getCurrentFolder() == nfcCard.folder) {
-                    Log.notice(F("Is already playing - skip restarting."));
+                    Log.notice(F("Is already playing - skip restarting." CR));
                     return;
                 }    
                 break;
