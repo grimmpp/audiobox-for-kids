@@ -41,7 +41,7 @@ public:
 
     void restartOption() {
         if (upButton.pressedFor(LONG_PRESS) && downButton.pressedFor(LONG_PRESS)) {
-            Log.notice(F("Restart Arduino!"));
+            Log.notice(F("Restart Arduino!" CR));
             asm volatile ("  jmp 0"); 
         }
     }

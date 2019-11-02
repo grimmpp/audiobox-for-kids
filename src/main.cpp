@@ -124,6 +124,7 @@ void loop() {
     buttonManager->restartOption();
 
     if (buttonManager->isPlayButtonPressedForLong()) {
+      Log.notice(F("Play button pressed for longer than 1 sec." CR));
       buttonManager->waitForPlayButtonToBeReleased();
 
       if (mp3Player->isPlaying()) {
@@ -181,6 +182,7 @@ void loop() {
 
   if (!rfidReader->readCardSerial()) {
     Log.notice(F("Cannot read card!" CR));
+    rfidReader->reset();
     return;
   }
 
@@ -196,6 +198,8 @@ void loop() {
     }
 
     rfidReader->halt();
+  } else {
+    rfidReader->reset();
   }
 }
 
