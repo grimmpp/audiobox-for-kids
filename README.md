@@ -8,7 +8,7 @@ This project is about an audiobox which allows small kids, who cannot read, don'
 </tr></table>
 
 # What can it do?
-The audiobox plays a mp3 file which is storage on a TF card after a RFID/NFC tag was placed on top of the box. 
+The audiobox plays a mp3 file which is storage on a TF card (small SD Card) after a RFID/NFC tag was placed on top of the box. 
 
 ## Preparation
 ### Copy mp3 files on TF Card
