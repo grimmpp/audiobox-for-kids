@@ -55,13 +55,15 @@ I used [PlatformIO](https://platformio.org/) and [VS Code](https://code.visualst
 * [VS Code](https://code.visualstudio.com/) is a proper IDE
   * Shows instantly compiler information
   * Has autocompletion
+  * Shows documentation of libraries and functions
   * Shows e.g. what a library supports by using autocompletion
   * Terminal is attached below code window part
   * ...
 * [PlatformIO](https://platformio.org/) 
   * Can really easily resolve C-dependencies (dependent libraries)
   * Can be used independently from IDE in command line.
-  * Code verification in docker container possible.
+  * Code verification in docker container possible. 
+    * Independent of local environment and easy reproducable
   * Supports a lot of controllers and ICs.
   * Code can be easily split up.
   * Projects can be organized.
