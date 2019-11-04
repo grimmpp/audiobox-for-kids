@@ -1,3 +1,22 @@
+## Structure of TF Card (Micro SD Card)
+
+Below you can find the structure of the TF Card.
+
+### Sotring tracks on TF Card
+For storing mp3 and wav tracks you can create folder starting with 01 until 99.
+Each folder can contain between 1 and 255 mp3 tracks. The track names must start with numbers. Optionally names can be added after the number.
+
+### System Sounds
+There are two special folders *mp3* and *advert*. Those two folder contain the file for the system sounds. The system sounds are prepared in this project.
+
+### Known difficulties and recommendations
+* Tracks must be stored in the same order like they are named onto the TF Card. Otherwise the mapping will not work.
+* I do not recommend to put file into the main folder.
+* Use simple filenames
+* Do not store other files on the TF Card because this can confuse the DfMiniPlayer
+  * Mac users can use this command in order to get rid of unnecessary files: `$ dot_clean /Volumes/SD-Karte`
+
+
 ```
 sd:/
    ├── 01
@@ -36,3 +55,5 @@ sd:/
        ├── 0802_reset_aborted.mp3 
        ├── 0999_reset_ok.mp3 
 ```
+
+Details can be found in the [data sheet](https://github.com/DFRobot/DFRobotDFPlayerMini/blob/master/doc/FN-M16P%2BEmbedded%2BMP3%2BAudio%2BModule%2BDatasheet.pdf) under *3.6.5 Specify playback of a track in a folder*.
