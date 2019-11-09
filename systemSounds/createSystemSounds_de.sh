@@ -11,8 +11,8 @@ dirAdvert="$lang/advert"
 echo "mkdir -p $dirMp3"
 mkdir -p $dirMp3
 
-echo "mkdir -p $dirAvert"
-mkdir -p $dirAvert
+echo "mkdir -p $dirAdvert"
+mkdir -p $dirAdvert
 
 echo "Generate number sound files: 1-255"
 for i in {1..255};
