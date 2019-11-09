@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# docs: https://pypi.org/project/google-speech/
+# original script: https://github.com/xfjx/TonUINO/blob/master/create-soundfiles.sh
+
 lang="de"
 
 echo "Generate number sound files: 1-255"
