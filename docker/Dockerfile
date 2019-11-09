@@ -32,7 +32,7 @@ RUN cd /home && \
 RUN cd /home/audiobox-for-kids && pio run -v
 
 RUN cd /home/audiobox-for-kids/systemSounds && \
-	chmod 777 ./createSystemSounds.sh && \
+	chmod 777 ./createSystemSounds_de.sh && \
 	./createSystemSounds_de.sh
 
 
