@@ -77,15 +77,15 @@ I used [PlatformIO](https://platformio.org/) and [VS Code](https://code.visualst
 
 ## Build with Docker:
 ```docker
-docker build -t audiobox .
+docker build -t audiobox /docker/Dockerfile
 ```
-This command builds a docker image based on ubuntu. It contains [platformio](https://platformio.org/), download this git repo and builds the code for the audiobox.
+This command builds a docker image based on ubuntu. It contains [platformio](https://platformio.org/), downloads this git repo and builds the code and audio files for the audiobox.
 
-The following command starts the docker container:
-```docker
-docker run -it audiobox
-```
+### Docker commands
+* Build docker image: `docker build -t audiobox /docker/Dockerfile`
+* Run docker image: `docker docker run -it audiobox`
 
+Inside the docker image you can e.g. run the platformIO commands.
 
 # Thanks to Thorsten Voß
 Thorsten Voß had the brilliant idea to build such a audiobox for little kids. He realized his idea also with almost the same parts. His tutorial and big community is really great and inspired me a lot.
