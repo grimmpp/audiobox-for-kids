@@ -82,7 +82,7 @@ docker build -t audiobox /docker/Dockerfile
 This command builds a docker image based on ubuntu. It contains [platformio](https://platformio.org/), downloads this git repo and builds the code and audio files for the audiobox. Building everything the first time takes quite a while until all dependencies are downloaded and everything is built. Please, be a bit patient. :-)
 
 ### Docker commands
-* Build docker image: `docker build -t audiobox /docker/Dockerfile`
+* Build docker image: **`docker build -t audiobox /docker/Dockerfile`**
 * Run docker image: `docker docker run -it audiobox`
 
 Inside the docker image you can e.g. run the platformIO commands.
