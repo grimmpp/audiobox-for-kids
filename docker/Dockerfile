@@ -3,9 +3,11 @@ FROM ubuntu:latest
 # install ubuntu packages for platformio
 RUN apt-get update  && \
 	# install python 2
-	apt-get install -y python-pip python	&& \
+	apt-get install -y python-pip python && \
 	# install git
-	apt-get install -y git 
+	apt-get install -y git && \
+	# delivers lsusb for checking / troubleshooting usb ports
+	apt-get install -y usbutils
 
 # install platformio
 RUN pip install -U platformio
@@ -41,7 +43,12 @@ RUN cd /home/audiobox-for-kids/systemSounds && \
 ### Change into this folder ...
 
 ### Run to build docker image:
-### docker build -t audiobox .
+## docker build -t audiobox .
 
 ### Run to use shell:
-### docker run -it audiobox
+## docker run -it audiobox
+
+### if you want to upload the code to arduino run 
+### if you use docker toolbox enable usb first in virtualbox in your VM settings. PIO will detect automatically the right usb port.
+## docker run -it --privileged audiobox 
+## cd /home/audiobox && pio run -v -t upload
