@@ -16,6 +16,14 @@ RUN apt-get install -y python3 python3-pip sox libsox-fmt-mp3
 # install google's text to speech
 RUN pip3 install google_speech
 
+# set language to German | needed for special characters
+RUN apt-get install locales	
+RUN locale-gen de_DE 
+RUN locale-gen de_DE.UTF-8
+ENV LANG de_DE.UTF-8
+ENV LANGUAGE de_DE:de
+ENV LC_ALL de_DE.UTF-8
+
 # clone repo
 RUN cd /home && \
 	git clone https://github.com/grimmpp/audiobox-for-kids.git
@@ -25,7 +33,7 @@ RUN cd /home/audiobox-for-kids && pio run -v
 
 RUN cd /home/audiobox-for-kids/systemSounds && \
 	chmod 777 ./createSystemSounds.sh && \
-	./createSystemSounds.sh
+	./createSystemSounds_de.sh
 
 
 
