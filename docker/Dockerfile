@@ -52,3 +52,7 @@ RUN cd /home/audiobox-for-kids/systemSounds && \
 ### if you use docker toolbox enable usb first in virtualbox in your VM settings. PIO will detect automatically the right usb port.
 ## docker run -it --privileged audiobox 
 ## cd /home/audiobox && pio run -v -t upload
+
+
+### alternatively use existing git repo from host:
+## docker run -it -v /c/Users/User/Documents/AudioBoxForKids/AudioBoxForKids:/home/audiobox -w /home/audiobox audiobox
