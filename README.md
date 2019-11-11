@@ -81,9 +81,16 @@ I used [PlatformIO](https://platformio.org/) and [VS Code](https://code.visualst
 **`docker build -t audiobox /docker/Dockerfile`** <br />
 This command builds a docker image based on ubuntu. It contains [platformio](https://platformio.org/), downloads this git repo and builds the code and audio files for the audiobox. Building everything the first time takes quite a while until all dependencies are downloaded and everything is built. Please, be a bit patient. :-)
 
+### Upload binaries onto Arduino with docker
+After creating the docker image, which also builds the project automatically, you can start the docker container and upload the binaries onto an Arduino Nano by using the following command: <br />
+**`docker run -w /home/audiobox-for-kids --privileged audiobox pio run -v -t upload`** <br />
+PlatformIO will automatically search for the usb port in which your Arduino Nano is plugged in. <Br />
+*--privileged* is used in this case because we need access to the usb ports. Alternatively you can also enable the usb ports by specifying an argument which maps the host usb ports to container usb ports.
+
 ### Docker commands
 * Build docker image: **`docker build -t audiobox /docker/Dockerfile`**
 * Run docker image: **`docker docker run -it audiobox`**
+* Upload to Arduino Nano: **`docker run -w /home/audiobox-for-kids --privileged audiobox pio run -v -t upload`**
 
 Inside the docker image you can e.g. run the platformIO commands.
 
