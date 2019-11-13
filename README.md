@@ -14,7 +14,7 @@ The audiobox plays a mp3 file which is storage on a TF card (small SD Card) afte
 
 ## Preparation
 ### Copy mp3 files on TF Card (Micro SD Card)
-First of all you need to copy the mp3 files which you want to listen to onto the TF card. Therefore have a look how the structure must look like. [Detailled description](./MicroCard-README.md)
+First of all you need to copy the mp3 files which you want to listen to onto the TF card. Therefore have a look how the structure of the TF Card must look like. [Detailled description](./MicroCard-README.md)
 ### Configure NCF Tag
 Before a tag can be used you need to tell the audiobox what should be played. After placing the tag on top of the audiobox the first time the audiobox will ask you and guide you through a menu in order to configure the tag. The following relevant infromation will be stored on the tag: folder number, mode, special field. You need to select a folder in which the mp3 is placed and the Arduino will store the folder number on the tag. After that you need to choose a play mode which is Audio Book, Album, Party, Single Track, Audio Book with Bookmark, or Admin. If you choose Single Track or Admin mode the menu will ask for another track or informaiton that will be stored into the special field. (Bookmarks will be automatically stored direktly on the Arduino's EEPROM so that you can continue listening furhter tracks of an audiobox. Bookmarks don't require space on the tag.)
 
