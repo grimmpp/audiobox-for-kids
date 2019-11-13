@@ -2,7 +2,7 @@
 
 Below you can find the structure of the TF Card.
 
-### Sotring tracks on TF Card
+### Storing tracks on TF Card
 For storing mp3 and wav tracks you can create folder starting with 01 until 99.
 Each folder can contain between 1 and 255 mp3 tracks. The track names must start with numbers. Optionally names can be added after the number.
 
