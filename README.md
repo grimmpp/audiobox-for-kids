@@ -36,12 +36,19 @@ After placing a tag on top of the audiobox it starts playing a random track out 
 * Random track selection
 * Menu to configure and map the nfc tags
 * Timeout for menus (default 60s)
+* Start sound which plays after arduino is initialized
 * Keep alive logic for power banks
 
 
 # Hardware
 * **[Part List](/part-list.md)** <br />
 <img src="/electronics/Schematic.png" height=200 />
+
+## Structure of TF Card
+**TODO: ...**
+
+## How to generate system sounds for menu
+**TODO: ...**
 
 ## NFC Tags
 In the **[Part List](/part-list.md)** you can find the used nfc tags. I've created as well small figures from an old wooden puzzle and disassembled nfc tags which I just fixed with ordenary tape. 
