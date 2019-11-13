@@ -51,7 +51,7 @@ RUN cd /home/audiobox-for-kids/systemSounds && \
 ### if you want to upload the code to arduino run 
 ### if you use docker toolbox enable usb first in virtualbox in your VM settings. PIO will detect automatically the right usb port.
 ## docker run -it --privileged audiobox 
-## cd /home/audiobox && pio run -v -t upload
+## cd /home/audiobox-for-kids && pio run -v -t upload
 
 
 ### alternatively use existing git repo from host:
