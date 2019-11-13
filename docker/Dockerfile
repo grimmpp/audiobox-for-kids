@@ -12,12 +12,28 @@ RUN apt-get update  && \
 # install platformio
 RUN pip install -U platformio
 
+# clone repo
+RUN cd /home && \
+	git clone https://github.com/grimmpp/audiobox-for-kids.git
+
+
+### BUILD CODE for Arduino Nano
+# 
+# run platformio: download all dependencies and build projects
+RUN cd /home/audiobox-for-kids && pio run -v
+
+
+### Install google text to speech (mp3)
+# 
 # install packages for google_speech
 RUN apt-get install -y python3 python3-pip sox libsox-fmt-mp3
-
+# 
 # install google's text to speech
 RUN pip3 install google_speech
 
+
+### Generate German System Sounds
+# 
 # set language to German | needed for special characters
 RUN apt-get install locales	
 RUN locale-gen de_DE 
@@ -25,13 +41,6 @@ RUN locale-gen de_DE.UTF-8
 ENV LANG de_DE.UTF-8
 ENV LANGUAGE de_DE:de
 ENV LC_ALL de_DE.UTF-8
-
-# clone repo
-RUN cd /home && \
-	git clone https://github.com/grimmpp/audiobox-for-kids.git
-
-# run platformio: download all dependencies and build projects
-RUN cd /home/audiobox-for-kids && pio run -v
 
 RUN cd /home/audiobox-for-kids/systemSounds && \
 	chmod 777 ./createSystemSounds_de.sh && \
@@ -51,7 +60,7 @@ RUN cd /home/audiobox-for-kids/systemSounds && \
 ### if you want to upload the code to arduino run 
 ### if you use docker toolbox enable usb first in virtualbox in your VM settings. PIO will detect automatically the right usb port.
 ## docker run -it --privileged audiobox 
-## cd /home/audiobox-for-kids && pio run -v -t upload
+## cd /home/audiobox && pio run -v -t upload
 
 
 ### alternatively use existing git repo from host:
