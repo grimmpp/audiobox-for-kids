@@ -44,8 +44,7 @@ After placing a tag on top of the audiobox it starts playing a random track out 
 * **[Part List](/part-list.md)** <br />
 <img src="/electronics/Schematic.png" height=200 />
 
-## Structure of TF Card
-**TODO: ...**
+## [Structure of TF Card](MicroCard-README.md)
 
 ## How to generate system sounds for menu
 **TODO: ...**
