@@ -1,4 +1,5 @@
 FROM ubuntu:latest
+# avr-gcc is using glibc which is not available in alpine => ubuntu
 
 # install ubuntu packages for platformio
 RUN apt-get update  && \
@@ -43,8 +44,8 @@ ENV LANGUAGE de_DE:de
 ENV LC_ALL de_DE.UTF-8
 
 RUN cd /home/audiobox-for-kids/systemSounds && \
-	chmod 777 ./createSystemSounds_de.sh && \
-	./createSystemSounds_de.sh
+	chmod 777 ./createSystemSounds_google_de.sh && \
+	./createSystemSounds_google_de.sh
 
 
 
