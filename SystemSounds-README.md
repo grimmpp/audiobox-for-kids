@@ -8,7 +8,10 @@ I started using the goolge speech service because it is very convenient to consu
 
 Bevor executing the commands from the table below ensure you changed into [/systemSounds](/systemSounds). 
 
-| Language | Service | Command |
+| Language | Service | Command | 
 | ---|---|---|
 |German|Google|**[./createSystemSounds_google_de.sh](/systemSounds/createSystemSounds_google_de.sh)**|
 |English|Google|**[./createSystemSounds_google_en.sh](/systemSounds/createSystemSounds_google_en.sh)**|
+
+## Say from MacOS
+I really like the text to speech [say](https://ss64.com/osx/say.html) tool from MacOS. Unfortunately I don't own a Mac and so far I don't know a way to use this tool without having MacOS running. Luckily Thorsten Voß provides a [script](https://github.com/xfjx/TonUINO/blob/master/create-soundfiles.sh) and [pregenerated files](https://github.com/xfjx/TonUINO/tree/master/SD-Karte) in his git repository: [TonUINO](https://github.com/xfjx/TonUINO).
