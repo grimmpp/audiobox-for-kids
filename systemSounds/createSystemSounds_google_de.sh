@@ -49,7 +49,7 @@ declare -a text=(
     "0999_reset_ok"             "Reset wurde durchgeführt!" 
 );
 
-max=$(( ${#text[@]} / 2 ))
+max=$(( ${#text[@]} / 2 - 1))
 for (( i=0; i<=$max; i++ ))
 do 
     cmd="google_speech -l $lang \"${text[2*i+1]}\" -o \"$dirMp3/${text[2*i]}.mp3\""
