@@ -43,26 +43,39 @@ ENV LANG de_DE.UTF-8
 ENV LANGUAGE de_DE:de
 ENV LC_ALL de_DE.UTF-8
 
+# Generate German mp3-files
 RUN cd /home/audiobox-for-kids/systemSounds && \
 	chmod 777 ./createSystemSounds_google_de.sh && \
 	./createSystemSounds_google_de.sh
 
+# Generate English mp3-files
+RUN cd /home/audiobox-for-kids/systemSounds && \
+	chmod 777 ./createSystemSounds_google_en.sh && \
+	./createSystemSounds_google_en.sh
 
 
-
-### Change into this folder ...
-
+### Change into this folder:
+## cd docker
+##
 ### Run to build docker image:
 ## docker build -t audiobox .
-
-### Run to use shell:
+##
+### Start container containing repo + built arduino SW + generated mp3 files:
 ## docker run -it audiobox
+
 
 ### if you want to upload the code to arduino run 
 ### if you use docker toolbox enable usb first in virtualbox in your VM settings. PIO will detect automatically the right usb port.
+##
 ## docker run -it --privileged audiobox 
-## cd /home/audiobox && pio run -v -t upload
+## Inside the container: cd /home/audiobox && pio run -v -t upload
+##
+### OR (the following starts the container, executes the pio upload command, and stops the container agian)
+##
+## docker run --privileged -w /home/audiobox audiobox pio run -v -t upload
 
 
-### alternatively use existing git repo from host:
+### alternatively use existing git repo from host. 
+### The following starts the container and mounts your working dir from the host.:
+##
 ## docker run -it -v /c/Users/User/Documents/AudioBoxForKids/AudioBoxForKids:/home/audiobox -w /home/audiobox audiobox
