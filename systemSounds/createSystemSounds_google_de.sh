@@ -3,30 +3,18 @@
 # docs: https://pypi.org/project/google-speech/
 # original script: https://github.com/xfjx/TonUINO/blob/master/create-soundfiles.sh
 
+source helper.sh
+source createNumberMp3s_google.sh
+
 lang="de"
 dirMp3="goolge/$lang/mp3"
 dirAdvert="goolge/$lang/advert"
 
-# create destination folders
-echo "mkdir -p $dirMp3"
-mkdir -p $dirMp3
+CreateFolders $dirMp3 $dirAdvert
 
-echo "mkdir -p $dirAdvert"
-mkdir -p $dirAdvert
+CopyStaticFiles $dirMp3
 
-echo "Generate number sound files: 1-255"
-for i in {1..255};
-do
-    # Generate text to mp3
-    j=$(printf "%04d" $i)
-    cmd="google_speech -l $lang \"$i\" -o $dirMp3/$j.mp3"
-    echo $cmd
-    $($cmd)
-    # Copy same file to advert folder
-    cmd="cp $dirMp3/$j.mp3 $dirAdvert/$j.mp3"
-    echo $cmd
-    $($cmd)
-done
+GenerateNumbers $lang $dirMp3 $dirAdvert
 
 declare -a text=(
     "0300_new_tag"              "Oh, eine neue Karte! Verwende die Lautstärke Tasten um einen Ordner für die Karte auszuwählen. Drücke die Pause Taste um die Auswahl zu speichern."
@@ -48,6 +36,8 @@ declare -a text=(
     "0802_reset_aborted"        "OK, ich habe den Vorgang abgebrochen." 
     "0999_reset_ok"             "Reset wurde durchgeführt!" 
 );
+
+echo -e "\n\e[32mGenerate Menu files:\e[39m"
 
 max=$(( ${#text[@]} / 2 - 1))
 for (( i=0; i<=$max; i++ ))
