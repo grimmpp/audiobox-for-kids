@@ -46,7 +46,10 @@ Plays tracks randomly from the defined folder. It does not stop until another rf
 
 
 # Hardware
-* **[Part List](/part-list.md)** <br />
+
+## [Part List](/part-list.md)
+
+## Schema
 <img src="/electronics/Schematic.png" height=200 />
 
 ## Case
