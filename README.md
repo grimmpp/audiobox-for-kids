@@ -51,6 +51,21 @@ Plays tracks randomly from the defined folder. It does not stop until another rf
 ## How to generate system sounds for menu
 **TODO: ...**
 
+## Sound Tracks
+Beside music and audio books which you own, I was interested in sound effects e.g. for the start sound or when a button gets pushed. Below you can find a list of links where I was able to find the one or other nice sound effect which answered my purpose. 
+
+### Animal Sounds
+* [Free Animal Sounds](https://freeanimalsounds.org/de/download-tierstimmen/)
+
+### Sound Effects
+* [soundjay.com](https://www.soundjay.com/)
+* [partnersinrhyme.com](https://www.partnersinrhyme.com/)
+* [freesoundeffects.com](https://www.freesoundeffects.com/)
+* [soundbible.com](http://soundbible.com/)
+
+### Free Audio Books
+* [gratis-hoerspiele.de](https://www.gratis-hoerspiele.de/)
+
 ## NFC Tags
 In the **[Part List](/part-list.md)** you can find the used nfc tags. I've created as well small figures from an old wooden puzzle and disassembled nfc tags which I just fixed with ordenary tape. 
 <table border=0><tr>
