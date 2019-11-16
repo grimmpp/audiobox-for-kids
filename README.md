@@ -49,11 +49,12 @@ Plays tracks randomly from the defined folder. It does not stop until another rf
 ## Case
 The case is a simple wooden cube (20cm x 20xm x 20cm). It has three buttons at the top, a speaker at the front, 4 feet at the bottom, and a power jack and a power on/off switch at the back. Inside there is a power bank, the board containing Arduino Nano, DfMiniPlayer, ... and some cable to connect everything.
 <table border=0><tr>
-  <td><img src="/pics/AudioboxForKids.png" width=300/></td>
-  <td><img src="/case/OpenscadCase.png" width=300/></td>
-  <td><img src="/pics/PHOTO_20191102_210156_small.jpg" width=300/></td>
+  <td><img src="/pics/AudioboxForKids.png" width=300 /></td>
+  <td><img src="/case/OpenscadCase.png" width=300 /></td>
+  <td><img src="/pics/PHOTO_20191102_210156_small.jpg" width=300 /></td>
 </tr></table>
-You can find further pictures from the box in folder [pics](pics) and the drawing in folder case.
+
+You can find further pictures from the box in folder [/pics](/pics) and the drawing in folder [/case](/case).
 
 ## [Structure of TF Card](MicroCard-README.md)
 
