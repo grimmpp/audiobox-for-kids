@@ -47,7 +47,12 @@ Plays tracks randomly from the defined folder. It does not stop until another rf
 <img src="/electronics/Schematic.png" height=200 />
 
 ## Case
-TODO:...
+The case is a simple wooden cube (20cm x 20xm x 20cm). It has three buttons at the top, a speaker at the front, 4 feet at the bottom, and a power jack and a power on/off switch at the back.
+<table border=0><tr>
+  <td><img src="/pics/AudioboxForKids.png" width=300/></td>
+  <td><img src="/case/OpenscadCase.png" width=300/></td>
+  <td><img src="/pics/20190930_191049_small.jpg" width=300/></td>
+</tr></table>
 
 ## [Structure of TF Card](MicroCard-README.md)
 
@@ -73,7 +78,7 @@ In the **[Part List](/part-list.md)** you can find the used nfc tags. I've creat
 <table border=0><tr>
   <td><img src="/pics/PHOTO_20191026_105735_small.jpg" width=300/></td>
   <td><img src="/pics/PHOTO_20191026_172736_small.jpg" width=300/></td>
-  <td><img src="/pics/PHOTO_20191026_172803_small.jpg" width=300/></td>
+  <td><img src="/pics/PHOTO_20191102_210156_small.jpg" width=300/></td>
 </tr></table>
 
 # Arduino Software
