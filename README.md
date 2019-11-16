@@ -40,6 +40,7 @@ Plays tracks randomly from the defined folder. It does not stop until another rf
 * Start sound which plays after arduino is initialized
 * Button combination to restart Arduino
 * Keep alive logic for power banks (See [PowerBankKeepAliveManager.h](/lib/PowerBankKeepAliveManager/PowerBankKeepAliveManager.h))
+* Delay for button for long press mode (See [ButtonManager.h](/lib/ButtonManager/ButtonManager.h))
 * Beep which will be played if a button is pushed (planned)
 
 
