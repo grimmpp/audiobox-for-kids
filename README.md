@@ -46,10 +46,12 @@ Plays tracks randomly from the defined folder. It does not stop until another rf
 * **[Part List](/part-list.md)** <br />
 <img src="/electronics/Schematic.png" height=200 />
 
+## Case
+TODO:...
+
 ## [Structure of TF Card](MicroCard-README.md)
 
-## How to generate system sounds for menu
-**TODO: ...**
+## [How to generate system sounds for menu?](SystemSounds-README.md)
 
 ## Sound Tracks
 Beside music and audio books which you own, I was interested in sound effects e.g. for the start sound or when a button gets pushed. Below you can find a list of links where I was able to find the one or other nice sound effect which answered my purpose. 
