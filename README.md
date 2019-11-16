@@ -1,5 +1,3 @@
-# PROJECT IN PROGRESS BUT ALREADY USABLE
-
 # AudioBox for Kids (Arduino and DFMiniPlayer Project)
 This project is about an audiobox which allows small kids, who cannot read, don't understand signs, or don't know which button to push, an easy way to choose sound effects, audio books, or music tracks. Playing tracks can be done by putting small items on the top of the audiobox. Those items are related to the e.g. audio book kids want to play and can be e.g. small figures or labelled cards or other nfc tags. 
 <br />
@@ -8,6 +6,7 @@ This project is about an audiobox which allows small kids, who cannot read, don'
   <td><img src="/pics/Board_Description_small.jpg" width=300/></td>
   <td><img src="/pics/20190930_191049_small.jpg" width=300/></td>
 </tr></table>
+
 
 # What can it do?
 The audiobox plays a mp3 file which is storage on a TF card (small SD Card) after a RFID/NFC tag was placed on top of the box. 
@@ -42,6 +41,7 @@ Plays tracks randomly from the defined folder. It does not stop until another rf
 * Keep alive logic for power banks
 
 
+
 # Hardware
 * **[Part List](/part-list.md)** <br />
 <img src="/electronics/Schematic.png" height=200 />
@@ -60,21 +60,6 @@ You can find further pictures from the box in folder [/pics](/pics) and the draw
 
 ## [How to generate system sounds for menu?](SystemSounds-README.md)
 
-## Sound Tracks
-Beside music and audio books which you own, I was interested in sound effects e.g. for the start sound or when a button gets pushed. Below you can find a list of links where I was able to find the one or other nice sound effect which answered my purpose. 
-
-### Animal Sounds
-* [Free Animal Sounds](https://freeanimalsounds.org/de/download-tierstimmen/)
-
-### Sound Effects
-* [soundjay.com](https://www.soundjay.com/)
-* [partnersinrhyme.com](https://www.partnersinrhyme.com/)
-* [freesoundeffects.com](https://www.freesoundeffects.com/)
-* [soundbible.com](http://soundbible.com/)
-
-### Free Audio Books
-* [gratis-hoerspiele.de](https://www.gratis-hoerspiele.de/)
-
 ## NFC Tags
 In the **[Part List](/part-list.md)** you can find the used nfc tags. I've created as well small figures from an old wooden puzzle and disassembled nfc tags which I just fixed with ordenary tape. 
 <table border=0><tr>
@@ -82,6 +67,8 @@ In the **[Part List](/part-list.md)** you can find the used nfc tags. I've creat
   <td><img src="/pics/PHOTO_20191026_172736_small.jpg" width=300/></td>
   <td><img src="/pics/PHOTO_20191026_172803_small.jpg" width=300/></td>
 </tr></table>
+
+
 
 # Arduino Software
 I used [PlatformIO](https://platformio.org/) and [VS Code](https://code.visualstudio.com/) in order to develop the software for this project which runs on an Arduino Nano.
@@ -125,6 +112,25 @@ PlatformIO will automatically search for the usb port in which your Arduino Nano
 * Upload to Arduino Nano: **`docker run -w /home/audiobox-for-kids --privileged audiobox pio run -v -t upload`**
 
 Inside the docker image you can e.g. run the platformIO commands.
+
+
+
+# Sound Tracks
+Beside music and audio books which you own, I was interested in sound effects e.g. for the start sound or when a button gets pushed. Below you can find a list of links where I was able to find the one or other nice sound effect which answered my purpose. 
+
+## Animal Sounds
+* [Free Animal Sounds](https://freeanimalsounds.org/de/download-tierstimmen/)
+
+## Sound Effects
+* [soundjay.com](https://www.soundjay.com/)
+* [partnersinrhyme.com](https://www.partnersinrhyme.com/)
+* [freesoundeffects.com](https://www.freesoundeffects.com/)
+* [soundbible.com](http://soundbible.com/)
+
+## Free Audio Books
+* [gratis-hoerspiele.de](https://www.gratis-hoerspiele.de/)
+
+
 
 # Thanks to Thorsten Voß
 Thorsten Voß had the brilliant idea to build such a audiobox for little kids. He realized his idea also with almost the same parts. His tutorial and big community is really great and inspired me a lot.
