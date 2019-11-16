@@ -19,15 +19,17 @@ First of all you need to copy the mp3 files which you want to listen to onto the
 Before a tag can be used you need to tell the audiobox what should be played. After placing the tag on top of the audiobox the first time the audiobox will ask you and guide you through a menu in order to configure the tag. The following relevant infromation will be stored on the tag: folder number, mode, special field. You need to select a folder in which the mp3 is placed and the Arduino will store the folder number on the tag. After that you need to choose a play mode which is Audio Book, Album, Party, Single Track, Audio Book with Bookmark, or Admin. If you choose Single Track or Admin mode the menu will ask for another track or informaiton that will be stored into the special field. (Bookmarks will be automatically stored direktly on the Arduino's EEPROM so that you can continue listening furhter tracks of an audiobox. Bookmarks don't require space on the tag.)
 
 ## Play Modes
-* **Audio Book**
-After placing a tag on top of the audiobox it starts playing a random track out of the defined folder. The folder number is stored on the tag and after finishing the track the audiobox stops playing other tracks.
-* **Album**
-* **Party**
+* **Audio Book** <br />
+After placing a tag on top of the audiobox it starts playing a random track out of the defined folder which is stored on the rfid tag. After finishing the track the audiobox stops playing other tracks.
+* **Album** <br />
+Plays all track from the defined folder in the order in which the tracks are stored on the TF Card.
+* **Party** <br />
+Plays tracks randomly from the defined folder. It does not stop until another rfid tag is placed or the pause button was pushed.
 * **Single Track** <br />
   By placing a NCF Tag on the audiobox it will play only one single track which is configured on the NFC Tag and stops afterwards. <br />
   Button next song and previous song is disabled in this mode.  <br />
   Button play/pause pauses, continuous, or restarts the track after it was finished.
-* **Audio Book with Bookmark**
+* **Audio Book with Bookmark** <br />
   After placing a tag on top of the box it starts playing an episode. After finishing an episode it stores the number of the next episode on the EEPROM (Arduino's internal persistent memory) so that it can proceed from there next time when the same tag is placed. If not interrupted by the pause button or another tag it will continue playing the next episode. 
 
 ## Features
@@ -44,10 +46,27 @@ After placing a tag on top of the audiobox it starts playing a random track out 
 * **[Part List](/part-list.md)** <br />
 <img src="/electronics/Schematic.png" height=200 />
 
+## Case
+TODO:...
+
 ## [Structure of TF Card](MicroCard-README.md)
 
-## How to generate system sounds for menu
-**TODO: ...**
+## [How to generate system sounds for menu?](SystemSounds-README.md)
+
+## Sound Tracks
+Beside music and audio books which you own, I was interested in sound effects e.g. for the start sound or when a button gets pushed. Below you can find a list of links where I was able to find the one or other nice sound effect which answered my purpose. 
+
+### Animal Sounds
+* [Free Animal Sounds](https://freeanimalsounds.org/de/download-tierstimmen/)
+
+### Sound Effects
+* [soundjay.com](https://www.soundjay.com/)
+* [partnersinrhyme.com](https://www.partnersinrhyme.com/)
+* [freesoundeffects.com](https://www.freesoundeffects.com/)
+* [soundbible.com](http://soundbible.com/)
+
+### Free Audio Books
+* [gratis-hoerspiele.de](https://www.gratis-hoerspiele.de/)
 
 ## NFC Tags
 In the **[Part List](/part-list.md)** you can find the used nfc tags. I've created as well small figures from an old wooden puzzle and disassembled nfc tags which I just fixed with ordenary tape. 
