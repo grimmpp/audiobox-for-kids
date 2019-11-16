@@ -20,9 +20,11 @@ Before a tag can be used you need to tell the audiobox what should be played. Af
 
 ## Play Modes
 * **Audio Book**
-After placing a tag on top of the audiobox it starts playing a random track out of the defined folder. The folder number is stored on the tag and after finishing the track the audiobox stops playing other tracks.
+After placing a tag on top of the audiobox it starts playing a random track out of the defined folder which is stored on the rfid tag. After finishing the track the audiobox stops playing other tracks.
 * **Album**
+Plays all track from the defined folder in the order in which the tracks are stored on the TF Card.
 * **Party**
+Plays tracks randomly from the defined folder. It does not stop until another rfid tag is placed or the pause button was pushed.
 * **Single Track** <br />
   By placing a NCF Tag on the audiobox it will play only one single track which is configured on the NFC Tag and stops afterwards. <br />
   Button next song and previous song is disabled in this mode.  <br />
