@@ -48,8 +48,10 @@ sd:/
        ├── 0330_say_number_ask.mp3 
        ├── 0331_say_number_no.mp3 
        ├── 0332_say_number_yes.mp3 
+       ├── 0350_buttonSound.mp3
        ├── 0400_tag_ok.mp3 
        ├── 0401_error.mp3 
+       ├── 0500_start_sound.mp3
        ├── 0800_reset_tag.mp3 
        ├── 0801_reset_tag_ok.mp3 
        ├── 0802_reset_aborted.mp3 
