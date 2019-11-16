@@ -53,7 +53,7 @@ The case is a simple wooden cube (20cm x 20xm x 20cm). It has three buttons at t
   <td><img src="/case/OpenscadCase.png" width=300/></td>
   <td><img src="/pics/PHOTO_20191102_210156_small.jpg" width=300/></td>
 </tr></table>
-You can find further pictures from the box in folder pics and the drawing in folder case.
+You can find further pictures from the box in folder [pics](pics) and the drawing in folder case.
 
 ## [Structure of TF Card](MicroCard-README.md)
 
