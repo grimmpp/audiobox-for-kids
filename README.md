@@ -68,7 +68,7 @@ In the **[Part List](/part-list.md)** you can find the used nfc tags. I've creat
   <td><img src="/pics/PHOTO_20191026_172803_small.jpg" width=300/></td>
 </tr></table>
 
-
+### TODO: How to imprint RFID Cards
 
 # Arduino Software
 I used [PlatformIO](https://platformio.org/) and [VS Code](https://code.visualstudio.com/) in order to develop the software for this project which runs on an Arduino Nano.
