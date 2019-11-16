@@ -38,7 +38,9 @@ Plays tracks randomly from the defined folder. It does not stop until another rf
 * Menu to configure and map the nfc tags
 * Timeout for menus (default 60s)
 * Start sound which plays after arduino is initialized
+* Button combination to restart Arduino
 * Keep alive logic for power banks (See [PowerBankKeepAliveManager.h](/lib/PowerBankKeepAliveManager/PowerBankKeepAliveManager.h))
+* Beep which will be played if a button is pushed (planned)
 
 
 
