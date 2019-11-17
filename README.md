@@ -187,4 +187,6 @@ In the community a lot of hard- and software issues are discussed and solved. Th
 * [mp3DirectCut](https://mpesch3.de/)
 * [Website TonUINO](https://www.voss.earth/tonuino/)
 * [Community TonUINO](https://discourse.voss.earth/)
-* [GitHub Repository TonUINO](https://github.com/xfjx/TonUINO)
+* TonUINO Repos
+  * [GitHub Repo original TonUINO from Thorsten Voß](https://github.com/xfjx/TonUINO)
+  * [GitHub Repo TonUINO from uluzox](https://github.com/uluzox/TonUINO)
