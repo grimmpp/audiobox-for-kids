@@ -57,6 +57,7 @@ Plays tracks randomly from the defined folder. It does not stop until another RF
 * Timeout for menus (default 60s)
 * Start sound which plays after arduino is initialized
 * Button combination to restart Arduino
+* Pin-compatible to original [TonUINO](https://www.voss.earth/tonuino/).
 * Keep alive logic for power banks (See [PowerBankKeepAliveManager.h](/lib/PowerBankKeepAliveManager/PowerBankKeepAliveManager.h))
 * Delay for button for long press mode (See [ButtonManager.h](/lib/ButtonManager/ButtonManager.h))
 * Beep which will be played if a button is pushed (planned)
