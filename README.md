@@ -24,6 +24,11 @@ This project is about an audiobox which allows small kids, who cannot read, don'
   * [Build with Docker](#build-with-docker)
 * **[Sound Tracks](#sound-tracks)**
   * [Animal Sounds](#animal-sounds)
+  * [Sound Effects](#sound-effects)
+  * [Free Audio Books](#free-audio-books)
+  * [Cutting Tool Recommendation](#cutting-tool-recommendation)
+  * [Structure of TF Card](#structure-of-tf-card)
+  * [How to generate system sounds for menu?](how-to-generate-system-sounds-for-menu)
 * **[Thanks to Thorsten Voß](#thanks-to-thorsten-voß)**
 * **[Links](#links)**
 
@@ -143,6 +148,7 @@ Inside the docker image you can e.g. run the platformIO commands.
 Beside music and audio books which you own, I was interested in sound effects e.g. for the start sound or when a button gets pushed. Below you can find a list of links where I was able to find the one or other nice sound effect which answered my purpose. 
 
 ## Animal Sounds
+I've created some little wooden figures with RFID tag on the back. The corresponding sound files I've used you can find on the following listed page:
 * [Free Animal Sounds](https://freeanimalsounds.org/de/download-tierstimmen/)
 
 ## Sound Effects
