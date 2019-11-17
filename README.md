@@ -1,5 +1,5 @@
 # AudioBox for Kids (Arduino and DFMiniPlayer Project)
-This project is about an audiobox which allows small kids, who cannot read, don't understand signs, or don't know which button to push, an easy way to choose sound effects, audio books, or music tracks. Playing tracks can be done by putting small items on the top of the audiobox. Those items are related to the e.g. audio book kids want to play and can be e.g. small figures or labelled cards or other nfc tags. 
+This project is about an audiobox which allows small kids, who cannot read, don't understand signs, or don't know which button to push, an easy way to choose sound effects, audio books, or music tracks. Playing tracks can be done by putting small items on the top of the audiobox. Those items are related to the e.g. audio book kids want to play and can be e.g. small figures or labelled cards or other NFC tags. 
 <br />
 <table border=0><tr>
   <td><img src="/pics/AudioboxForKids.png" width=300/></td>
@@ -33,15 +33,15 @@ This project is about an audiobox which allows small kids, who cannot read, don'
 * **[Links](#links)**
 
 # What can it do?
-The audiobox plays a mp3 file which is storage on a TF card (small SD Card) after a RFID/NFC tag was placed on top of the box. This is the basic function of the audiobox. You can also use the button on top of the audiobox in order to change the volume, switch to the next or previous track, or to pause a audio track.
+The audiobox plays a mp3 file which is storage on a TF card (small SD Card) after a RFID/NFC Tag was placed on top of the box. This is the basic function of the audiobox. You can also use the button on top of the audiobox in order to change the volume, switch to the next or previous track, or to pause a audio track.
 
 ## Play Modes
 * **Audio Book** <br />
-After placing a tag on top of the audiobox it starts playing a random track out of the defined folder which is stored on the rfid tag. After finishing the track the audiobox stops playing other tracks.
+After placing a tag on top of the audiobox it starts playing a random track out of the defined folder which is stored on the RFID Tag. After finishing the track the audiobox stops playing other tracks.
 * **Album** <br />
 Plays all track from the defined folder in the order in which the tracks are stored on the TF Card.
 * **Party** <br />
-Plays tracks randomly from the defined folder. It does not stop until another rfid tag is placed or the pause button was pushed.
+Plays tracks randomly from the defined folder. It does not stop until another RFID Tag is placed or the pause button was pushed.
 * **Single Track** <br />
   By placing a NCF Tag on the audiobox it will play only one single track which is configured on the NFC Tag and stops afterwards. <br />
   Button next song and previous song is disabled in this mode.  <br />
@@ -50,10 +50,10 @@ Plays tracks randomly from the defined folder. It does not stop until another rf
   After placing a tag on top of the box it starts playing an episode. After finishing an episode it stores the number of the next episode on the EEPROM (Arduino's internal persistent memory) so that it can proceed from there next time when the same tag is placed. If not interrupted by the pause button or another tag it will continue playing the next episode. 
 
 ## Features
-* Plays tracks, albums, songs, audio books, ... by placing nfc tags on the box.
+* Plays tracks, albums, songs, audio books, ... by placing NFC Tags on the box.
 * Bookmarks for audio books
 * Random track selection
-* Menu to configure and map the nfc tags
+* Menu to configure and map the NFC Tags
 * Timeout for menus (default 60s)
 * Start sound which plays after arduino is initialized
 * Button combination to restart Arduino
@@ -90,7 +90,7 @@ The case is a simple wooden cube (20cm x 20xm x 20cm). It has three buttons at t
 You can find further pictures from the box in folder [/pics](/pics) and the drawing in folder [/case](/case).
 
 ## NFC Tags
-In the **[Part List](/part-list.md)** you can find the used nfc tags. I've created as well small figures from an old wooden puzzle and disassembled nfc tags which I just fixed with ordenary tape. 
+In the **[Part List](/part-list.md)** you can find the used NFC Tags. I've created as well small figures from an old wooden puzzle and disassembled NFC Tags which I just fixed with ordenary tape. 
 <table border=0><tr>
   <td><img src="/pics/PHOTO_20191026_105735_small.jpg" width=300/></td>
   <td><img src="/pics/PHOTO_20191026_172736_small.jpg" width=300/></td>
@@ -148,7 +148,7 @@ Inside the docker image you can e.g. run the platformIO commands.
 Beside music and audio books which you own, I was interested in sound effects e.g. for the start sound or when a button gets pushed. Below you can find a list of links where I was able to find the one or other nice sound effect which answered my purpose. 
 
 ## Animal Sounds
-I've created some little wooden figures with RFID tag on the back. The corresponding sound files I've used you can find on the following listed page:
+I've created some little wooden figures with RFID Tag on the back. The corresponding sound files I've used you can find on the following listed page:
 * [Free Animal Sounds](https://freeanimalsounds.org/de/download-tierstimmen/)
 
 ## Sound Effects
