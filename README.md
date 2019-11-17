@@ -178,7 +178,13 @@ Thorsten Voß had the brilliant idea to build such a audiobox for little kids. H
 In the community a lot of hard- and software issues are discussed and solved. There is also a [big variety of ideas how to build a case](https://discourse.voss.earth/t/tonuino-gehaeuse-galerie/786). Thorsten also offers a [board](https://discourse.voss.earth/t/neue-platine-version-1-51/63) on which you can put the Arduino Nano, DfMiniPlayer, and to which you can connect the RFID Reader. (Wake up logic for Power Bank is not included.)
 
 # Links
+* [PlatformIO](https://platformio.org/) 
+* [VS Code](https://code.visualstudio.com/)
 * [DFRobot: DfPlayer Mini](https://wiki.dfrobot.com/DFPlayer_Mini_SKU_DFR0299)
 * [DF Mini Player - Datasheet](/FN-M16P+Embedded+MP3+Audio+Module+Datasheet.pdf) ([original link](https://github.com/DFRobot/DFRobotDFPlayerMini/blob/master/doc/FN-M16P%2BEmbedded%2BMP3%2BAudio%2BModule%2BDatasheet.pdf))
 * [Lib: DFPlayer Mini Mp3 by Makuna](https://github.com/Makuna/DFMiniMp3/blob/master/src/DFMiniMp3.h)
 * [Lib: JC_Button](https://github.com/JChristensen/JC_Button)
+* [mp3DirectCut](https://mpesch3.de/)
+* [Website TonUINO](https://www.voss.earth/tonuino/)
+* [Community TonUINO](https://discourse.voss.earth/)
+* [GitHub Repository TonUINO](https://github.com/xfjx/TonUINO)
