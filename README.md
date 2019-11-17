@@ -9,6 +9,7 @@ This project is about an audiobox which allows small kids, who cannot read, don'
 
 ## Content
 * **[What can it do?](#what-can-it-do)**
+* **[Administration](#administration)**
 * **[Hardware](#hardware)**
 * **[Arduino Software](#arduino-software)**
 * **[Sound Tracks](#sound-tracks)**
@@ -16,13 +17,7 @@ This project is about an audiobox which allows small kids, who cannot read, don'
 * **[Links](#links)**
 
 # What can it do?
-The audiobox plays a mp3 file which is storage on a TF card (small SD Card) after a RFID/NFC tag was placed on top of the box. 
-
-## Preparation
-### Copy mp3 files on TF Card (Micro SD Card)
-First of all you need to copy the mp3 files which you want to listen to onto the TF card. Therefore have a look how the structure of the TF Card must look like. [Detailled description](./MicroCard-README.md)
-### Configure NCF Tag
-Before a tag can be used you need to tell the audiobox what should be played. After placing the tag on top of the audiobox the first time the audiobox will ask you and guide you through a menu in order to configure the tag. The following relevant infromation will be stored on the tag: folder number, mode, special field. You need to select a folder in which the mp3 is placed and the Arduino will store the folder number on the tag. After that you need to choose a play mode which is Audio Book, Album, Party, Single Track, Audio Book with Bookmark, or Admin. If you choose Single Track or Admin mode the menu will ask for another track or informaiton that will be stored into the special field. (Bookmarks will be automatically stored direktly on the Arduino's EEPROM so that you can continue listening furhter tracks of an audiobox. Bookmarks don't require space on the tag.)
+The audiobox plays a mp3 file which is storage on a TF card (small SD Card) after a RFID/NFC tag was placed on top of the box. This is the basic function of the audiobox. You can also use the button on top of the audiobox in order to change the volume, switch to the next or previous track, or to pause a audio track.
 
 ## Play Modes
 * **Audio Book** <br />
@@ -50,6 +45,15 @@ Plays tracks randomly from the defined folder. It does not stop until another rf
 * Delay for button for long press mode (See [ButtonManager.h](/lib/ButtonManager/ButtonManager.h))
 * Beep which will be played if a button is pushed (planned)
 
+
+
+# Administration
+
+## Copy mp3 files on TF Card (Micro SD Card)
+Before you can start you need to copy the mp3 files which you want to listen to onto the TF card. Therefore have a look how the structure of the TF Card must look like. In addition to the sound file you want to listen to you need to copy some file for the menus. For deteails have a look [here](/MicroCard-README.md).
+
+## Configure NCF Tag
+Before a tag can be used you need to tell the audiobox what should be played. After placing the tag on top of the audiobox the first time the audiobox will ask you and guide you through a menu in order to configure the tag. The following relevant infromation will be stored on the tag: folder number, mode, special field. You need to select a folder in which the mp3 is placed and the Arduino will store the folder number on the tag. After that you need to choose a play mode which is Audio Book, Album, Party, Single Track, Audio Book with Bookmark, or Admin. If you choose Single Track or Admin mode the menu will ask for another track or informaiton that will be stored into the special field. (Bookmarks will be automatically stored direktly on the Arduino's EEPROM so that you can continue listening furhter tracks of an audiobox. Bookmarks don't require space on the tag.)
 
 
 # Hardware
