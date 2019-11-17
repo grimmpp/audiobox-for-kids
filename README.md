@@ -17,7 +17,7 @@ This project is about an audiobox which allows small kids, who cannot read, don'
 * **[Hardware](#hardware)**
   * [Part List](#part-list)
   * [Schema](#schema)
-  * [Case](case)
+  * [Case](#case)
 * **[Arduino Software](#arduino-software)**
   * [Why did I choose VS Code and PlatformIO?](#why-did-i-choose-vs-code-and-platformio)
   * [PlatformIO commands](#platformio-commands)
