@@ -136,6 +136,8 @@ Beside music and audio books which you own, I was interested in sound effects e.
 ## Free Audio Books
 * [gratis-hoerspiele.de](https://www.gratis-hoerspiele.de/)
 
+## Cutting Tool Recommendation
+Sometimes sound tracks start with a little silence in the beginning, especially if it is a sound effect or animal sound I want the audiobox to respond directly on the ncf tag. That's why I often remove this little silence in the beginning or end of sound tracks. Often it is also needed to adapt the volume of a sound track. I haven't tried out a lot of tools but I'm quite happy with [mp3DirectCut](https://mpesch3.de/) and that's why I recommend it here.
 
 
 # Thanks to Thorsten Voß
