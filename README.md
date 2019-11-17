@@ -179,6 +179,6 @@ In the community a lot of hard- and software issues are discussed and solved. Th
 
 # Links
 * [DFRobot: DfPlayer Mini](https://wiki.dfrobot.com/DFPlayer_Mini_SKU_DFR0299)
-* [DF Mini Player - Datasheet](https://github.com/DFRobot/DFRobotDFPlayerMini/blob/master/doc/FN-M16P%2BEmbedded%2BMP3%2BAudio%2BModule%2BDatasheet.pdf)
+* [DF Mini Player - Datasheet](/FN-M16P+Embedded+MP3+Audio+Module+Datasheet.pdf) ([original link](https://github.com/DFRobot/DFRobotDFPlayerMini/blob/master/doc/FN-M16P%2BEmbedded%2BMP3%2BAudio%2BModule%2BDatasheet.pdf))
 * [Lib: DFPlayer Mini Mp3 by Makuna](https://github.com/Makuna/DFMiniMp3/blob/master/src/DFMiniMp3.h)
 * [Lib: JC_Button](https://github.com/JChristensen/JC_Button)
