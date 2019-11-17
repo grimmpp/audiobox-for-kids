@@ -7,6 +7,13 @@ This project is about an audiobox which allows small kids, who cannot read, don'
   <td><img src="/pics/20190930_191049_small.jpg" width=300/></td>
 </tr></table>
 
+## Content
+* **[What can it do?](#what-can-it-do)**
+* **[Hardware](#hardware)**
+* **[Arduino Software](#arduino-software)**
+* **[Sound Tracks](#sound-tracks)**
+* **[Thanks to Thorsten Voß](#thanks-to-thorsten-voß)**
+* **[Links](#links)**
 
 # What can it do?
 The audiobox plays a mp3 file which is storage on a TF card (small SD Card) after a RFID/NFC tag was placed on top of the box. 
@@ -148,7 +155,7 @@ Thorsten Voß had the brilliant idea to build such a audiobox for little kids. H
 
 In the community a lot of hard- and software issues are discussed and solved. There is also a [big variety of ideas how to build a case](https://discourse.voss.earth/t/tonuino-gehaeuse-galerie/786). Thorsten also offers a [board](https://discourse.voss.earth/t/neue-platine-version-1-51/63) on which you can put the Arduino Nano, DfMiniPlayer, and to which you can connect the RFID Reader. (Wake up logic for Power Bank is not included.)
 
-## Links
+# Links
 * [DFRobot: DfPlayer Mini](https://wiki.dfrobot.com/DFPlayer_Mini_SKU_DFR0299)
 * [DF Mini Player - Datasheet](https://github.com/DFRobot/DFRobotDFPlayerMini/blob/master/doc/FN-M16P%2BEmbedded%2BMP3%2BAudio%2BModule%2BDatasheet.pdf)
 * [Lib: DFPlayer Mini Mp3 by Makuna](https://github.com/Makuna/DFMiniMp3/blob/master/src/DFMiniMp3.h)
