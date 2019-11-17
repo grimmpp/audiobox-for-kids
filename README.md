@@ -28,7 +28,7 @@ This project is about an audiobox which allows small kids, who cannot read, don'
   * [Free Audio Books](#free-audio-books)
   * [Cutting Tool Recommendation](#cutting-tool-recommendation)
   * [Structure of TF Card](#structure-of-tf-card)
-  * [How to generate System Sounds for menu?](how-to-generate-system-sounds-for-menu)
+  * [How to generate System Sounds for menu?](#how-to-generate-system-sounds-for-menu)
 * **[Thanks to Thorsten Voß](#thanks-to-thorsten-voß)**
 * **[Links](#links)**
 
