@@ -9,10 +9,21 @@ This project is about an audiobox which allows small kids, who cannot read, don'
 
 ## Content
 * **[What can it do?](#what-can-it-do)**
+  * [Play Modes](#play-modes)
+  * [Features](#features)
 * **[Administration](#administration)**
+  * [Copy mp3 files on TF Card (Micro SD Card)](#copy-mp3-files-on-tf-card-micro-sd-card)
+  * [Configure NFC Tag](#configure-nfc-tag)
 * **[Hardware](#hardware)**
+  * [Part List](#part-list)
+  * [Schema](#schema)
+  * [Case](case)
 * **[Arduino Software](#arduino-software)**
+  * [Why did I choose VS Code and PlatformIO?](#why-did-i-choose-vs-code-and-platformio)
+  * [PlatformIO commands](#platformio-commands)
+  * [Build with Docker](#build-with-docker)
 * **[Sound Tracks](#sound-tracks)**
+  * [Animal Sounds](#animal-sounds)
 * **[Thanks to Thorsten Voß](#thanks-to-thorsten-voß)**
 * **[Links](#links)**
 
@@ -52,7 +63,7 @@ Plays tracks randomly from the defined folder. It does not stop until another rf
 ## Copy mp3 files on TF Card (Micro SD Card)
 Before you can start you need to copy the mp3 files which you want to listen to onto the TF card. Therefore have a look how the structure of the TF Card must look like. In addition to the sound file you want to listen to you need to copy some file for the menus. For deteails have a look [here](/MicroCard-README.md).
 
-## Configure NCF Tag
+## Configure NFC Tag
 Before a tag can be used you need to tell the audiobox what should be played. After placing the tag on top of the audiobox the first time the audiobox will ask you and guide you through a menu in order to configure the tag. The following relevant infromation will be stored on the tag: folder number, mode, special field. You need to select a folder in which the mp3 is placed and the Arduino will store the folder number on the tag. After that you need to choose a play mode which is Audio Book, Album, Party, Single Track, Audio Book with Bookmark, or Admin. If you choose Single Track or Admin mode the menu will ask for another track or informaiton that will be stored into the special field. (Bookmarks will be automatically stored direktly on the Arduino's EEPROM so that you can continue listening furhter tracks of an audiobox. Bookmarks don't require space on the tag.)
 
 
@@ -73,10 +84,6 @@ The case is a simple wooden cube (20cm x 20xm x 20cm). It has three buttons at t
 
 You can find further pictures from the box in folder [/pics](/pics) and the drawing in folder [/case](/case).
 
-## [Structure of TF Card](MicroCard-README.md)
-
-## [How to generate system sounds for menu?](SystemSounds-README.md)
-
 ## NFC Tags
 In the **[Part List](/part-list.md)** you can find the used nfc tags. I've created as well small figures from an old wooden puzzle and disassembled nfc tags which I just fixed with ordenary tape. 
 <table border=0><tr>
@@ -89,7 +96,7 @@ In the **[Part List](/part-list.md)** you can find the used nfc tags. I've creat
 
 # Arduino Software
 I used [PlatformIO](https://platformio.org/) and [VS Code](https://code.visualstudio.com/) in order to develop the software for this project which runs on an Arduino Nano.
-## Why did I choose VS Code and PlatformIO
+## Why did I choose VS Code and PlatformIO?
 * [VS Code](https://code.visualstudio.com/) is a proper IDE
   * Shows instantly compiler information
   * Has autocompletion
@@ -108,12 +115,12 @@ I used [PlatformIO](https://platformio.org/) and [VS Code](https://code.visualst
   * Upload and monitoring to/of Arduino Nano easily possible.
   * ...
 
-## PlatformIO commands:
+## PlatformIO commands
 * Build code: **`pio run`**
 * Build and upload code: **`pio run -v -t upload`**
 * Open serial monitor: **`pio device monitor -b 115200`**
 
-## Build with Docker:
+## Build with Docker
 **`docker build -t audiobox /docker/Dockerfile`** <br />
 This command builds a docker image based on ubuntu. It contains [platformio](https://platformio.org/), downloads this git repo and builds the code and audio files for the audiobox. Building everything the first time takes quite a while until all dependencies are downloaded and everything is built. Please, be a bit patient. :-)
 
@@ -149,6 +156,11 @@ Beside music and audio books which you own, I was interested in sound effects e.
 
 ## Cutting Tool Recommendation
 Sometimes sound tracks start with a little silence in the beginning, especially if it is a sound effect or animal sound I want the audiobox to respond directly on the ncf tag. That's why I often remove this little silence in the beginning or end of sound tracks. Often it is also needed to adapt the volume of a sound track. I haven't tried out a lot of tools but I'm quite happy with [mp3DirectCut](https://mpesch3.de/) and that's why I recommend it here.
+
+## [Structure of TF Card](MicroCard-README.md)
+
+## [How to generate system sounds for menu?](SystemSounds-README.md)
+
 
 
 # Thanks to Thorsten Voß
