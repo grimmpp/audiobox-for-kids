@@ -58,4 +58,4 @@ sd:/
        ├── 0999_reset_ok.mp3 
 ```
 
-Details can be found in the [datasheet](https://github.com/DFRobot/DFRobotDFPlayerMini/blob/master/doc/FN-M16P%2BEmbedded%2BMP3%2BAudio%2BModule%2BDatasheet.pdf) under *3.6.5 Specify playback of a track in a folder*.
+Details can be found in the [datasheet](/FN-M16P+Embedded+MP3+Audio+Module+Datasheet.pdf) ([original link](https://github.com/DFRobot/DFRobotDFPlayerMini/blob/master/doc/FN-M16P%2BEmbedded%2BMP3%2BAudio%2BModule%2BDatasheet.pdf)) under *3.6.5 Specify playback of a track in a folder*.
