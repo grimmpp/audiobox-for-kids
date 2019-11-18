@@ -29,6 +29,7 @@ This project is about an audiobox which allows small kids, who cannot read, don'
   * [Cutting Tool Recommendation](#cutting-tool-recommendation)
   * [Structure of TF Card](#structure-of-tf-card)
   * [How to generate System Sounds for menu?](#how-to-generate-system-sounds-for-menu)
+* **[Reconsideration and Outlook](#reconsideration-and-outlook)
 * **[Thanks to Thorsten Voß](#thanks-to-thorsten-voß)**
 * **[Links](#links)**
 
@@ -169,6 +170,16 @@ Sometimes sound tracks start with a little silence in the beginning, especially 
 ## [How to generate System Sounds for menu?](SystemSounds-README.md)
 
 
+
+# Reconsideration and Outlook
+In this section I want to highlight what went good and bad and maybe more interesting what would I change next time or could be done in addition.
+
+## The good things
+## The bad things
+## What could be done in addtion?
+* **External USB Port**: Unfortunately I was not able to find a nice USB jack that I could mount at the back of case. That's why I just use a simple 5V power jack to charge the audiobox. I'd really love to have an external USB connection to the Arduino Nano because now I need to remove all the time the back if I want to upload the code again.
+* **External Interface for TF Card**: I decided to keep the TF Card internally so that the kids cannot remove it. The downside is if I want to copy new mp3s on the card I need to remove the whole back.
+## Reconstruction thoughts
 
 # Thanks to Thorsten Voß
 Thorsten Voß had the brilliant idea to build such a audiobox for little kids. He realized his idea also with almost the same parts. His tutorial and big community is really great and inspired me a lot.
