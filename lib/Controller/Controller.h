@@ -139,7 +139,13 @@ public:
         
             case NFC_CARD_MODE::PARTY:
                 Log.notice(F("Party Mode: Tracks from folder %d will be played randomly." CR), nfcCard.folder);
-                nextTrack = random(1, mp3Player->getCurrentFolder() + 1);
+                nextTrack = random(1, mp3Player->getFolderTrackCount(mp3Player->getCurrentFolder()));
+                // Prevent to play one song twice.
+                if (nextTrack == mp3Player->getCurrentTrack()) {
+                    if (nextTrack < mp3Player->getFolderTrackCount(mp3Player->getCurrentFolder())) nextTrack++;
+                    else if (nextTrack > 1) nextTrack--;
+                    //else do nothing because there is only one track in this folder!
+                }
                 break;
 
             case NFC_CARD_MODE::SINGLE_TRACK:
