@@ -6,6 +6,10 @@ Below you can find the structure of the TF Card.
 For storing mp3 and wav tracks you can create folder starting with 01 until 99.
 Each folder can contain between 1 and 255 mp3 tracks. The track names must start with numbers. Optionally names can be added after the number.
 
+### [TinoTool](https://github.com/DarthBrento/TinoTool)
+There is a nice tooling called [TinoTool](https://github.com/DarthBrento/TinoTool) which can rename your songs and copy them into the corresponding folder into your TF Card.
+I made a copy of the binary and placed it into the folder [tooling](/tooling). Unfortunately, it only works under Windows but does its job perfectly.
+
 ### System Sounds
 There are two special folders *mp3* and *advert*. Those two folder contain the file for the system sounds. The system sounds are prepared in this project.
 
