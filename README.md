@@ -170,7 +170,7 @@ I've created some little wooden figures with RFID Tag on the back. The correspon
 Sometimes sound tracks start with a little silence in the beginning, especially if it is a sound effect or animal sound I want the audiobox to respond directly on the ncf tag. That's why I often remove this little silence in the beginning or end of sound tracks. Often it is also needed to adapt the volume of a sound track. I haven't tried out a lot of tools but I'm quite happy with [mp3DirectCut](https://mpesch3.de/) and that's why I recommend it here.
 
 ## [Structure of TF Card](MicroCard-README.md)
-There is also a nice tool for renaming and copying sound files onto the TF Card. See [TinoTool](/MicroCard-README.md#tinotool) ([Original GitRepo: TinoTool](https://github.com/DarthBrento/TinoTool)).
+There is also a nice tool for renaming and copying sound files onto the TF Card. See [TinoTool](/MicroCard-README.md#tinotool) ([Original GitRepo: TinoTool](https://github.com/DarthBrento/TinoTool)). I really like this tool because it reduces a lot of unwanted effort and it is very convenient to have for this case a GUI.
 
 ## [How to generate System Sounds for menu?](SystemSounds-README.md)
 
