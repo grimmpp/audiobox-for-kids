@@ -29,7 +29,7 @@ This project is about an audiobox which allows small kids, who cannot read, don'
   * [Cutting Tool Recommendation](#cutting-tool-recommendation)
   * [Structure of TF Card](#structure-of-tf-card)
   * [How to generate System Sounds for menu?](#how-to-generate-system-sounds-for-menu)
-* **[Reconsideration and Outlook](#reconsideration-and-outlook)
+* **[Reconsideration and Outlook](#reconsideration-and-outlook)**
   * [The good things](#the-good-things)
   * [What went not so well](#what-went-not-so-well)
   * [What could be done differently?](#what-could-be-done-differently)
