@@ -8,7 +8,8 @@ Each folder can contain between 1 and 255 mp3 tracks. The track names must start
 
 ### [TinoTool](https://github.com/DarthBrento/TinoTool)
 There is a nice tooling called [TinoTool](https://github.com/DarthBrento/TinoTool) which can rename your songs and copy them into the corresponding folder into your TF Card.
-I made a copy of the binary and placed it into the folder [tooling](/tooling). Unfortunately, it only works under Windows but does its job perfectly.
+I made a copy of the binary and placed it into the folder [tooling](/tooling). Unfortunately, it only works under Windows but does its job perfectly. <br />
+<img src="/pics/TinoTool.png" width=300 />
 
 ### System Sounds
 There are two special folders *mp3* and *advert*. Those two folder contain the file for the system sounds. The system sounds are prepared in this project.
