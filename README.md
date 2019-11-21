@@ -182,7 +182,8 @@ In this section I want to highlight what went good and bad and maybe more intere
 ## The good things
 TODO: ...
 ## What went not so well
-TODO: ...
+* **Broker chip on DfMiniPlayer** 
+* **Different chips for DfMiniPlayer**
 ## What could be done differently?
 * **External USB Port**: Unfortunately I was not able to find a nice USB jack that I could mount at the back of case. That's why I just use a simple 5V power jack to charge the audiobox. I'd really love to have an external USB connection to the Arduino Nano because now I need to remove all the time the back if I want to upload the code again.
 * **External Interface for TF Card**: I decided to keep the TF Card internally so that the kids cannot remove it. The downside is if I want to copy new mp3s on the card I need to remove the whole back.
