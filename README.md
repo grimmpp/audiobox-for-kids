@@ -181,7 +181,11 @@ In this section I want to highlight what went good and bad and maybe more intere
 
 ## The good things
 TODO: ...
+* **Detection of NFC Cards**
+* **Building the electronics**
+* **Following Thorstens [guide](https://www.voss.earth/tonuino/)**
 ## What went not so well
+TODO: ...
 * **Broker chip on DfMiniPlayer** 
 * **Different chips for DfMiniPlayer**
 ## What could be done differently?
