@@ -156,6 +156,7 @@ Beside music and audio books which you own, I was interested in sound effects e.
 ## Animal Sounds
 I've created some little wooden figures with RFID Tag on the back. The corresponding sound files I've used you can find on the following listed page:
 * [Free Animal Sounds](https://freeanimalsounds.org/de/download-tierstimmen/)
+* [FindSounds](https://www.findsounds.com/ISAPI/search.dll)
 
 ## Sound Effects
 * [soundjay.com](https://www.soundjay.com/)
