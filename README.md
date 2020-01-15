@@ -108,6 +108,8 @@ In the **[Part List](/part-list.md)** you can find the used NFC Tags. I've creat
 
 For printing the pitures and lables on the RFID Cards I bought self adhesive foil for color laser printers. After printing and cutting them out you can stick them on the RFID Cards.
 
+I found those following nice images, which are free for personal use, on [clipart-library.com](http://clipart-library.com).
+
 <table border=0><tr>
   <td><img src="/pics/RfidCards1.jpg" height=300/></td>
   <td><img src="/pics/RfidCards2_small.jpg" height=300/></td>
