@@ -197,7 +197,7 @@ TODO: ...
 * **Following Thorstens [guide](https://www.voss.earth/tonuino/)**
 ## What went not so well
 TODO: ...
-* **Broker chip on DfMiniPlayer** 
+* **Broken chip on DfMiniPlayer** 
 * **Different chips for DfMiniPlayer**
 ## What could be done differently?
 * **External USB Port**: Unfortunately I was not able to find a nice USB jack that I could mount at the back of case. That's why I just use a simple 5V power jack to charge the audiobox. I'd really love to have an external USB connection to the Arduino Nano because now I need to remove all the time the back if I want to upload the code again.
