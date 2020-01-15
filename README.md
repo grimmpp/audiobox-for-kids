@@ -18,6 +18,7 @@ This project is about an audiobox which allows small kids, who cannot read, don'
   * [Part List](#part-list)
   * [Schema](#schema)
   * [Case](#case)
+  * [NFC Tags](#nfc-tags)
 * **[Arduino Software](#arduino-software)**
   * [Why did I choose VS Code and PlatformIO?](#why-did-i-choose-vs-code-and-platformio)
   * [PlatformIO commands](#platformio-commands)
@@ -103,7 +104,14 @@ In the **[Part List](/part-list.md)** you can find the used NFC Tags. I've creat
   <td><img src="/pics/PHOTO_20191026_172803_small.jpg" width=300/></td>
 </tr></table>
 
-### TODO: How to imprint RFID Cards
+### How to imprint RFID Cards
+
+For printing the pitures and lables on the RFID Cards I bought self adhesive foil for color laser printers. After printing and cutting them out you can stick them on the RFID Cards.
+
+<table border=0><tr>
+  <td><img src="/pics/RfidCards1.jpg" height=300/></td>
+  <td><img src="/pics/RfidCards2_small.jpg" height=300/></td>
+</tr></table>
 
 # Arduino Software
 I used [PlatformIO](https://platformio.org/) and [VS Code](https://code.visualstudio.com/) in order to develop the software for this project which runs on an Arduino Nano.
