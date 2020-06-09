@@ -1,9 +1,6 @@
 FROM ubuntu:latest
 # avr-gcc is using glibc which is not available in alpine => ubuntu
 
-RUN apt-get install software-properties-common
-RUN apt-add-repository universe
-
 # install ubuntu packages for platformio
 RUN apt-get update  && \
 	# install python 2
